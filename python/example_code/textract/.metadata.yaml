@@ -1,0 +1,16 @@
+---
+# Amazon Textract explorer example
+files:
+  - path: textract_wrapper.py
+    services:
+      - s3
+      - sns
+      - sqs
+      - textract
+  - path: test/conftest.py
+    services:
+      - textract
+  - path: test/test_textract_wrapper.py
+    services:
+      - textract
+...
