@@ -26,7 +26,7 @@ const params = {
       /* more items */
     ],
     ToAddresses: [
-      "RECEIVER_ADDRESS", //RECEIVER_ADDRESS
+      "croxdesarrollo@gmail.com", //RECEIVER_ADDRESS
       /* more To-email addresses */
     ],
   },
@@ -45,12 +45,12 @@ const params = {
     },
     Subject: {
       Charset: "UTF-8",
-      Data: "EMAIL_SUBJECT",
+      Data: "EMAIL de prueba SES",
     },
   },
-  Source: "SENDER_ADDRESS", // SENDER_ADDRESS
+  Source: "jadcve@gmail.com", // SENDER_ADDRESS
   ReplyToAddresses: [
-    /* more items */
+    "jadcve@gmail.com"
   ],
 };
 
