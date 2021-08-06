@@ -1,20 +1,15 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
-
 ABOUT THIS NODE.JS EXAMPLE: This example works with AWS SDK for JavaScript version 3 (v3),
 which is available at https://github.com/aws/aws-sdk-js-v3. This example is in the 'AWS SDK for JavaScript v3 Developer Guide' at
 https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/s3-example-creating-buckets.html.
-
 Purpose:
 ses_sendemail.js demonstrates how to send an email using Amazon SES.
-
 Inputs (replace in code):
 - RECEIVER_ADDRESS
 - SENDER_ADDRESS
-
 Running the code:
 node ses_sendemail.js
-
 // snippet-start:[ses.JavaScript.email.sendEmailV3]
 */
 // Create the promise and SES service object
@@ -31,7 +26,7 @@ const params = {
       /* more items */
     ],
     ToAddresses: [
-      "RECEIVER_ADDRESS", //RECEIVER_ADDRESS
+      "croxdesarrollo@gmail.com", //RECEIVER_ADDRESS
       /* more To-email addresses */
     ],
   },
@@ -50,12 +45,12 @@ const params = {
     },
     Subject: {
       Charset: "UTF-8",
-      Data: "EMAIL_SUBJECT",
+      Data: "EMAIL de prueba SES",
     },
   },
-  Source: "SENDER_ADDRESS", // SENDER_ADDRESS
+  Source: "jadcve@gmail.com", // SENDER_ADDRESS
   ReplyToAddresses: [
-    /* more items */
+    "jadcve@gmail.com"
   ],
 };
 
