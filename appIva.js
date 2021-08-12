@@ -146,14 +146,8 @@ function Log(contacto, ctc, codigo, error) {
 }
 
 
-//USUARIO JADCVE
-var user = "AKIAQTGVO3CD2HRZ4U5B";
-var password = "R3ncjWY89/huYCvbtnUeCS7bYGj3b4qF0SCWXpAf";
 
 
-//CREDENCIALES ORIGINALES 
-//var user = "AKIAIXIJEZ2V4EFKQIZA";
-//var password = "bdFAjHnG9h0kCRNa/4VoVgX7uFkIMNVXadEC3uG2";
 var cuenta = "Aviso Iva <avisoiva@suragra.com>";
 var ses = aws.createSESClient(user, password); //Credenciales SES
 
