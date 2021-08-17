@@ -20,12 +20,21 @@ const sqlConfig = {
 const pool = new sql.ConnectionPool(sqlConfig);
 const poolConnect = pool.connect();
 
+let template;
+let asunto;
+
 async function buscarTemplate() {
     await poolConnect;
 
     try{
         const consulta = 'select * from TA_SGRA_ALRTA_FLUJO_CNTBL';
-        let resultado = await pool.request().query(consulta);
+        let resultado = await pool.request().query(consulta, (err, recordset) => {
+            template = recordset[2].GLS_DET_ALT;
+            asunto = recordset[2].GLS_ALT;
+
+            console.log(template);
+            console.log(asunto);
+        });
   
         console.log(resultado.recordset[3].GLS_ALT);
 
