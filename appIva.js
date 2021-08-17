@@ -21,7 +21,7 @@ const pool = new sql.ConnectionPool(sqlConfig);
 const poolConnect = pool.connect();
 
 let template;
-var asunto;
+let asunto;
 
 const buscarTemplate = async () => {
     await poolConnect;
@@ -43,7 +43,33 @@ const buscarTemplate = async () => {
     }
 }
 
+const comenzar = async () => {
+    await poolConnect;
 
-const valores =  buscarTemplate()
-    .then(resultados => console.log(resultados.asunto));
+    try{
+        let request = await pool.request();
+        request.stream = true;
+        request.execute('SP_SGR_CNA_ALT_CTB_AMZ');
+
+        request.on('row', function(row) {
+            if (row.COD_CNP == "IMOR") {
+             //   ClientesSap();
+             console.log(row.COD_CNP);
+            }
+        });
+
+        //console.log(request)
+  
+      //  return resultados;
+    }catch(err){
+        console.log(err);
+    }
+}
+
+
+// buscarTemplate()
+//     .then(resultados => {
+
+//     });
+comenzar();
 // console.log(valores.asunto);
