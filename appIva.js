@@ -31,8 +31,13 @@ async function buscarTemplate() {
         let resultado = await pool.request().query(consulta);
         template = resultado.recordset[2].GLS_DET_ALT;
         asunto = resultado.recordset[2].GLS_ALT;
+
+        resultados = {
+            template,
+            asunto
+        }
   
-        return asunto;
+        return resultados;
         
 
     }catch(err){
@@ -41,4 +46,4 @@ async function buscarTemplate() {
 }
 
 buscarTemplate()
-    .then(asunto => console.log(asunto));
+    .then(resultados => console.log(resultados.asunto));
