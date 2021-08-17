@@ -23,7 +23,7 @@ const poolConnect = pool.connect();
 let template;
 var asunto;
 
-buscarTemplate() = async () => {
+const buscarTemplate = async () => {
     await poolConnect;
 
     try{
@@ -44,6 +44,6 @@ buscarTemplate() = async () => {
 }
 
 
-const valores = await buscarTemplate();
+const valores =  buscarTemplate();
     // .then(resultados => console.log(resultados.asunto));
 console.log(valores.asunto);
