@@ -44,6 +44,6 @@ const buscarTemplate = async () => {
 }
 
 
-const valores =  buscarTemplate();
-    // .then(resultados => console.log(resultados.asunto));
-console.log(valores.asunto);
+const valores =  buscarTemplate()
+    .then(resultados => console.log(resultados.asunto));
+// console.log(valores.asunto);
