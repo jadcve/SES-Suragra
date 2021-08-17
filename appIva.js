@@ -32,7 +32,7 @@ async function buscarTemplate() {
         template = resultado.recordset[2].GLS_DET_ALT;
         asunto = resultado.recordset[2].GLS_ALT;
   
-        
+        return asunto;
         
 
     }catch(err){
@@ -41,4 +41,4 @@ async function buscarTemplate() {
 }
 
 buscarTemplate()
-    .then(console.log(asunto));
+    .then(asunto => console.log(asunto));
