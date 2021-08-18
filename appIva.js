@@ -36,7 +36,9 @@ const buscarTemplate = async () => {
             template,
             asunto
         }
-  
+
+        comenzar();
+
         return resultados;
     }catch(err){
         console.log(err);
@@ -46,24 +48,40 @@ const buscarTemplate = async () => {
 const comenzar = async () => {
     await poolConnect;
 
-    try{
+    try {
         let request = await pool.request();
         request.stream = true;
         request.execute('SP_SGR_CNA_ALT_CTB_AMZ');
 
         request.on('row', function(row) {
             if (row.COD_CNP == "IMOR") {
-             //   ClientesSap();
-             console.log(row.COD_CNP);
+                console.log(row.COD_CNP);
+                // clientesSap();
             }
         });
 
         //console.log(request)
-  
+
       //  return resultados;
-    }catch(err){
+    } catch(err) {
         console.log(err);
     }
+}
+
+const clientesSap = async () => {
+    await poolConnect;
+    
+    try {
+        let request = await pool.request();
+        request.stream = true;
+        request.execute('SP_SGR_CNA_CLT_ALT_AMZ_IVAP');
+        request.on('row', function(row) {
+            console.log(row);
+            // ContactosSap(row);
+        });
+    }catch(err) {
+        console.log(err);
+    }   
 }
 
 
@@ -71,7 +89,7 @@ const comenzar = async () => {
 //     .then(resultados => {
 
 //     });
-comenzar();
-// console.log(valores.asunto);
+// comenzar();
+clientesSap();
 
 
