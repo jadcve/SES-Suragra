@@ -79,7 +79,7 @@ const clientesSap = async () => {
             console.log(row);
             // ContactosSap(row);
         });
-    }catch(err) {
+    } catch(err) {
         console.log(err);
     }   
 }
@@ -109,6 +109,8 @@ const contactosSap = (contacto) => {
                 console.log(request.parameters.CAN_CTC.value);
             };
         });
+    } catch(err) {
+        console.log(err);
     }
 }
 
