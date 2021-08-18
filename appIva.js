@@ -84,12 +84,41 @@ const clientesSap = async () => {
     }   
 }
 
+const contactosSap = (contacto) => {
+    await poolConnect;
+    
+    try {
+        let request = await pool.request();
+        request.stream = true;
+        request.input('COD_IDT_SAP', sql.VarChar, contacto.COD_IDT_SAP);
+        request.output('CAN_CTC', sql.Int);
+        request.execute('SP_SGR_CNA_CTC_CLT_SAP');
+        request.on('row', function(row) {
+            if (row.GLS_EML == "NO DEFINIDO") {
+                console.log(row.GLS_EML);
+                // Log(contacto, row.COD_CTC, 2, "EMAIL NO DEFINIDO");
+            } else {
+                console.log(row.GLS_EML);
+                // RegistrosContacto(contacto, row);
+            }
+        });
+
+        request.on('done', function(returnValue) {
+            if (request.parameters.CAN_CTC.value == 0) {
+                // Log(contacto, 0, 3, "NO EXISTEN CONTACTOS PARA NOTIFICAR");
+                console.log(request.parameters.CAN_CTC.value);
+            };
+        });
+    }
+}
+
 
 // buscarTemplate()
 //     .then(resultados => {
 
 //     });
 // comenzar();
-clientesSap();
+// clientesSap();
+contactosSap();
 
 
