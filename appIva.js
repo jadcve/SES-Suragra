@@ -126,7 +126,8 @@ const registrosContacto = async (contacto, datosContacto) => {
         console.log("Contacto recibido:", contacto.COD_IDT_SAP);         
     
         request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
-            email(contacto, datosContacto, recordsets[0]);
+            console.log("Ver recordsets:", recordsets[0]);         
+            // email(contacto, datosContacto, recordsets[0]);
         });
     } catch(err) {
         console.log(err);
@@ -145,8 +146,8 @@ const log = async (contacto, ctc, codigo, error) => {
         request.input('FLG_EML_ENV', sql.Int, codigo);
         request.input('COD_CNP', sql.VarChar, "IMOR");
         request.input('GLS_ERR', sql.VarChar, error);
-        // request.execute('SP_SGR_INS_TRZ_ALT', function(err, recordsets, returnValue, affected) {
-        // });
+        request.execute('SP_SGR_INS_TRZ_ALT', function(err, recordsets, returnValue, affected) {
+        });
     } catch(err) {
         console.log(err);
     }
