@@ -21,7 +21,7 @@ const poolConnect = pool.connect();
 
 let template;
 let asunto;
-let alttest=1;
+let alttest=2;
 
 const buscarTemplate = async () => {
     await poolConnect;
@@ -123,9 +123,10 @@ const registrosContacto = async (contacto, datosContacto) => {
         request.stream = false;        
         request.input('COD_IDT_SAP', sql.VarChar, contacto.COD_IDT_SAP);
         console.log("Contacto recibido:", contacto.COD_IDT_SAP);         
-        request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
-            email(contacto, datosContacto, recordsets[0]);
-        });
+        console.log("Ver recordsets:", recordsets);         
+        // request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
+        //     email(contacto, datosContacto, recordsets[0]);
+        // });
     } catch(err) {
         console.log(err);
     }
@@ -389,6 +390,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
 // comenzar();
 clientesSap();
 //contactosSap();
-registrosContacto();
+// registrosContacto();
 
 
