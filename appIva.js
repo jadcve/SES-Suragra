@@ -77,7 +77,7 @@ const clientesSap = async () => {
         request.execute('SP_SGR_CNA_CLT_ALT_AMZ_IVAP');
         request.on('row', function(row) {
             console.log(row);
-             contactosSap(row);
+            contactosSap(row);
         });
     } catch(err) {
         console.log(err);
@@ -114,16 +114,21 @@ const contactosSap = async (contacto) => {
     }
 }
 
-function RegistrosContacto(contacto, datosContacto) {
-    var connection5 = new sql.Connection(config, function(err) {
-        var request = new sql.Request(connection5);
+const registrosContacto = async (contacto, datosContacto) => {
+    await poolConnect;
+    
+    try {
+        let request = await pool.request();
+
         request.stream = false;        
         request.input('COD_IDT_SAP', sql.VarChar, contacto.COD_IDT_SAP);
-        request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
-                    
-        Email(contacto, datosContacto, recordsets[0]);
-        });
-    });
+        console.log("Aquí estaría enviando el correo. Saludos Alain");         
+        // request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
+        //     Email(contacto, datosContacto, recordsets[0]);
+        // });
+    } catch(err) {
+        console.log(err);
+    }
 }
 
 
@@ -132,7 +137,8 @@ function RegistrosContacto(contacto, datosContacto) {
 
 //     });
 // comenzar();
- clientesSap();
+clientesSap();
 //contactosSap();
+registrosContacto();
 
 
