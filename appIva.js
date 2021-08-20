@@ -122,7 +122,7 @@ const registrosContacto = async (contacto, datosContacto) => {
 
         request.stream = false;        
         request.input('COD_IDT_SAP', sql.VarChar, contacto.COD_IDT_SAP);
-        console.log("Aquí estaría enviando el correo. Saludos Alain");         
+        console.log("Contacto recibido:", contacto.COD_IDT_SAP);         
         request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
             email(contacto, datosContacto, recordsets[0]);
         });
