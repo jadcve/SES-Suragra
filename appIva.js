@@ -127,7 +127,7 @@ const registrosContacto = async (contacto, datosContacto) => {
     
         request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
             console.log("Ver recordsets:", recordsets);         
-            email(contacto, datosContacto, recordsets[0]);
+            // email(contacto, datosContacto, recordsets[0]);
         });
     } catch(err) {
         console.log(err);
