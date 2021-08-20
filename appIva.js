@@ -1,4 +1,3 @@
-
 const sql = require('mssql');
 
 const sqlConfig = {
@@ -22,6 +21,7 @@ const poolConnect = pool.connect();
 
 let template;
 let asunto;
+let alttest=1;
 
 const buscarTemplate = async () => {
     await poolConnect;
@@ -96,16 +96,16 @@ const contactosSap = async (contacto) => {
         request.on('row', function(row) {
             if (row.GLS_EML == "NO DEFINIDO") {
                 console.log(row.GLS_EML);
-                // Log(contacto, row.COD_CTC, 2, "EMAIL NO DEFINIDO");
+                log(contacto, row.COD_CTC, 2, "EMAIL NO DEFINIDO");
             } else {
                 console.log(row.GLS_EML);
-                // RegistrosContacto(contacto, row);
+                registrosContacto(contacto, row);
             }
         });
 
         request.on('done', function(returnValue) {
             if (request.parameters.CAN_CTC.value == 0) {
-                // Log(contacto, 0, 3, "NO EXISTEN CONTACTOS PARA NOTIFICAR");
+                log(contacto, 0, 3, "NO EXISTEN CONTACTOS PARA NOTIFICAR");
                 console.log(request.parameters.CAN_CTC.value);
             };
         });
@@ -123,11 +123,261 @@ const registrosContacto = async (contacto, datosContacto) => {
         request.stream = false;        
         request.input('COD_IDT_SAP', sql.VarChar, contacto.COD_IDT_SAP);
         console.log("Aquí estaría enviando el correo. Saludos Alain");         
-        // request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
-        //     Email(contacto, datosContacto, recordsets[0]);
+        request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
+            email(contacto, datosContacto, recordsets[0]);
+        });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+const log = async (contacto, ctc, codigo, error) => {
+    await poolConnect;
+
+    try {
+        let request = await pool.request();
+
+        request.stream = false; 
+        request.input('COD_IDT_SAP', sql.VarChar, contacto.COD_IDT_SAP);
+        request.input('COD_IDT_CTC', sql.VarChar, ctc);
+        request.input('FLG_EML_ENV', sql.Int, codigo);
+        request.input('COD_CNP', sql.VarChar, "IMOR");
+        request.input('GLS_ERR', sql.VarChar, error);
+        // request.execute('SP_SGR_INS_TRZ_ALT', function(err, recordsets, returnValue, affected) {
         // });
     } catch(err) {
         console.log(err);
+    }
+}
+
+let l = 0;
+
+const email = async (contacto, datosContacto, datosFactura) => {
+    l = l + 1;
+
+    let emailSend="";
+    if (alttest == 1){
+        emailSend = datosContacto.GLS_EML;
+    }
+    else{
+        emailSend = "jadcve@gmail.com";
+    }
+
+    try {
+        let recipient_address = emailSend;
+        let recipient_address2 = "aracelli@suragra.com";
+        let recipient_address3 = "marcoantonio@suragra.com";
+        let recipient_address4 = "cinthia@suragra.com";
+        let recipient_address5 = "priscilla@suragra.com";
+        let recipient_address6 = "jadcve@gmail.com";
+        let sender_address = cuenta;
+
+        let temp = templeta;
+
+        temp = temp.replace("&lt;&lt;CLIENTE&gt;&gt;", "<b>" + s.trim(contacto.NOM_CLT_SAP) + "</b>");
+        temp = temp.replace("&lt;&lt;MES&gt;&gt;", "<b>" + s.capitalize(moment().subtract(10, 'days').locale('es').format('MMMM')) + " " + moment().locale('es').format('YYYY') + "</b>");
+
+        let detalleFactura = "";
+        let detalleCredito = "";
+
+        detalleFactura = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>SurAgra</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/></head><body style="margin: 0; padding: 0;">';
+        detalleFactura = detalleFactura + "<p><br><b>Facturacion Moneda Extranjera</b></p>";
+        detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+        detalleFactura = detalleFactura + "<tr>";
+        detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA Pendiente</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias Mora</span></span></td>";
+        detalleFactura = detalleFactura + "</tr>";
+
+        let totalNeto = 0;
+        let totalIva = 0;
+        let contFac = 0;
+
+        let totalNeto2 = 0;
+        let totalIva2 = 0;
+        let contFac2 = 0;
+
+        let totalIvaFinal=0;
+        let codmon="";
+
+        async.each(datosFactura, function(value, callback) {
+            codmon = value.COD_MON;
+
+            if (value.FLG_TPO_REG == "IP" && value.COD_MON == "USD") {
+                contFac = contFac + 1;
+
+                totalIva = totalIva + (value.IMP_IVA_DOC);
+                totalNeto = totalNeto + (value.IMP_TOT_NTO);                                                   
+
+                detalleFactura = detalleFactura + "<tr>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_NTO, {
+                    fractionDigits: 2,
+                    symbols: {
+                        decimal: ',',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_IVA_DOC, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
+                detalleFactura = detalleFactura + "</tr>";
+            }
+
+            if (value.FLG_TPO_REG == "IP" && value.COD_MON == "CLP") {
+                contFac2 = contFac2 + 1;
+
+                totalIva2 = totalIva2 + (value.IMP_IVA_DOC);
+                totalNeto2 = totalNeto2 + (value.IMP_TOT_NTO);                       
+
+                detalleCredito = detalleCredito + "<tr>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_NTO, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_IVA_DOC, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";                
+                detalleCredito = detalleCredito + "</tr>";
+            }
+                totalIvaFinal = totalIva + totalIva2;
+                callback();
+            },
+            function(err) {
+                if (contFac > 0) {
+                    detalleFactura = detalleFactura + "<tr>";
+                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>" + codmon + " "+ formatNumber(totalNeto, {
+                        fractionDigits: 2,
+                        symbols: {
+                            decimal: ',',
+                            grouping: '.'
+                        }
+                    }) + "</b></span></span></td>";                    
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP " + formatNumber(totalIva, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='100'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "</tr>";
+                    detalleFactura = detalleFactura + "</table>";
+                    detalleFactura = detalleFactura + "<p><br></p>";                                            
+                } else {
+                    detalleFactura = detalleFactura + "</table>";
+                    detalleFactura = detalleFactura + "<p>No existen documentos con IVA pendiente asociados a facturas con moneda extranjera</p>";
+                }
+
+                detalleFactura = detalleFactura + "<br><p><b>Facturacion  Moneda Local</b></p>";
+                detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+                detalleFactura = detalleFactura + "<tr>";
+                detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA Pendiente</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias Mora</span></span></td>";
+                detalleFactura = detalleFactura + "</tr>";
+
+
+                if (contFac2 > 0) {
+                    detalleFactura = detalleFactura + detalleCredito;
+                    detalleFactura = detalleFactura + "<tr>";
+                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>" + codmon + " "  + formatNumber(totalNeto2, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</b></span></span></td>";                    
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP "  + formatNumber(totalIva2, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='100'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "</tr>";
+                    detalleFactura = detalleFactura + "</table>";
+                    detalleFactura = detalleFactura + "<p><br></p>";                                                
+                } else {
+                    detalleFactura = detalleFactura + "</table>";
+                    detalleFactura = detalleFactura + "<p>No existen documentos con IVA pendiente asociados a facturas con moneda local</p>";
+                }
+
+
+                temp = temp.replace('&lt;TOTAL&gt;', formatNumber(totalIvaFinal, {
+                                                                                    fractionDigits: 0,
+                                                                                    symbols: {
+                                                                                        decimal: '.',
+                                                                                        grouping: '.'
+                                                                                    }
+                                                                                }));
+                temp = temp.replace('&lt;FACTURAS&gt;', detalleFactura);
+                
+                if (alttest == 1){
+                    let send_args = {
+                        'Destination.ToAddresses.member.1': recipient_address,
+                        'Destination.ToAddresses.member.2': recipient_address2,
+                        'Destination.ToAddresses.member.3': recipient_address3,
+                        'Destination.ToAddresses.member.4': recipient_address4,
+                        'Destination.ToAddresses.member.5': recipient_address5,
+                        'Message.Body.Html.Charset': 'UTF-8',
+                        'Message.Body.Html.Data': temp,
+                        'Message.Subject.Charset': 'UTF-8',
+                        'Message.Subject.Data': asunto + " SURAGRA",
+                        'Source': sender_address
+                    }
+                }
+                else{
+                    let send_args = {
+                        'Destination.ToAddresses.member.1': recipient_address,
+                        'Message.Body.Html.Charset': 'UTF-8',
+                        'Message.Body.Html.Data': temp,
+                        'Message.Subject.Charset': 'UTF-8',
+                        'Message.Subject.Data': asunto + " SURAGRA",
+                        'Source': sender_address
+                    }                   
+                }                                
+
+                if (mandar == 1) {
+                    setTimeout(function() {
+                        ses.call('SendEmail', send_args, function(err, result) {
+                            console.log(result);
+                            if (err) {
+                                log(contacto, datosContacto.COD_CTC, 1, err);
+                            } else {
+                                log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
+                            }
+                        });
+                    }, 200 * l);
+                }
+            });
+    } catch (err) {
+        log(contacto, datosContacto.COD_CTC, 1, err);
     }
 }
 
