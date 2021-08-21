@@ -25,6 +25,7 @@ let alttest=2;
 
 const buscarTemplate = async () => {
     await poolConnect;
+    console.log('Entrando a función buscarTemplate');
 
     try{
         const consulta = 'select * from TA_SGRA_ALRTA_FLUJO_CNTBL';
@@ -47,7 +48,7 @@ const buscarTemplate = async () => {
 
 const comenzar = async () => {
     await poolConnect;
-
+    console.log('Entrando a función comenzar');
     try {
         let request = await pool.request();
         request.stream = true;
@@ -70,6 +71,7 @@ const comenzar = async () => {
 
 const clientesSap = async () => {
     await poolConnect;
+    console.log('Entrando a función clientesSap');
     
     try {
         let request = await pool.request();
@@ -86,6 +88,7 @@ const clientesSap = async () => {
 
 const contactosSap = async (contacto) => {
     await poolConnect;
+    console.log('Entrando a función contactosSap');
     
     try {
         let request = await pool.request();
@@ -116,6 +119,7 @@ const contactosSap = async (contacto) => {
 
 const registrosContacto = async (contacto, datosContacto) => {
     await poolConnect;
+    console.log('Entrando a función registrosContacto');
     
     try {
         let request = await pool.request();
@@ -136,6 +140,7 @@ const registrosContacto = async (contacto, datosContacto) => {
 
 const log = async (contacto, ctc, codigo, error) => {
     await poolConnect;
+    console.log('Entrando a función log');
 
     try {
         let request = await pool.request();
@@ -156,6 +161,7 @@ const log = async (contacto, ctc, codigo, error) => {
 let l = 0;
 
 const email = async (contacto, datosContacto, datosFactura) => {
+    console.log('Entrando a función comenzar');
     l = l + 1;
 
     let emailSend="";
