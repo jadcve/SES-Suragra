@@ -130,7 +130,8 @@ const registrosContacto = async (contacto, datosContacto) => {
         console.log("Contacto recibido:", contacto.COD_IDT_SAP);         
     
         request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
-            // console.log("Ver recordsets:", recordsets);         
+            console.log("registrosContacto previa a llamar función email");         
+            console.log("===============================================");         
             email(contacto, datosContacto, recordsets);
         });
     } catch(err) {
