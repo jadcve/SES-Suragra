@@ -167,11 +167,11 @@ const email = async (contacto, datosContacto, datosFactura) => {
 
     let emailSend="";
     if (alttest == 1){
-        console.log("Contenido variable emailSend: ", emailSend);
         emailSend = datosContacto.GLS_EML;
     }
     else{
         emailSend = "jadcve@gmail.com";
+        console.log("Contenido variable emailSend: ", emailSend);
     }
 
     try {
