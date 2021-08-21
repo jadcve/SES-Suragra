@@ -162,7 +162,7 @@ const log = async (contacto, ctc, codigo, error) => {
 let l = 0;
 
 const email = async (contacto, datosContacto, datosFactura) => {
-    console.log('Entrando a función comenzar');
+    console.log('Entrando a función email');
     l = l + 1;
 
     let emailSend="";
@@ -184,6 +184,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
 
         let temp = template;
 
+        console.log('Tratando de imprimir contenido de variable global template');
         console.log(template);
 
         // temp = temp.replace("&lt;&lt;CLIENTE&gt;&gt;", "<b>" + s.trim(contacto.NOM_CLT_SAP) + "</b>");
