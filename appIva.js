@@ -190,35 +190,43 @@ const email = async (contacto, datosContacto, datosFactura) => {
 
         console.log('Tratando de imprimir contenido de variable global template');
         console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-        console.log(template);
+        
+        temp = temp.replace("&lt;&lt;CLIENTE&gt;&gt;", "<b>" + s.trim(contacto.NOM_CLT_SAP) + "</b>");
+        temp = temp.replace("&lt;&lt;MES&gt;&gt;", "<b>" + s.capitalize(moment().subtract(10, 'days').locale('es').format('MMMM')) + " " + moment().locale('es').format('YYYY') + "</b>");
 
-        // temp = temp.replace("&lt;&lt;CLIENTE&gt;&gt;", "<b>" + s.trim(contacto.NOM_CLT_SAP) + "</b>");
-        // temp = temp.replace("&lt;&lt;MES&gt;&gt;", "<b>" + s.capitalize(moment().subtract(10, 'days').locale('es').format('MMMM')) + " " + moment().locale('es').format('YYYY') + "</b>");
+        let detalleFactura = "";
+        let detalleCredito = "";
 
-        // let detalleFactura = "";
-        // let detalleCredito = "";
+        detalleFactura = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>SurAgra</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/></head><body style="margin: 0; padding: 0;">';
+        detalleFactura = detalleFactura + "<p><br><b>Facturacion Moneda Extranjera</b></p>";
+        detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+        detalleFactura = detalleFactura + "<tr>";
+        detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA Pendiente</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias Mora</span></span></td>";
+        detalleFactura = detalleFactura + "</tr>";
 
-        // detalleFactura = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>SurAgra</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/></head><body style="margin: 0; padding: 0;">';
-        // detalleFactura = detalleFactura + "<p><br><b>Facturacion Moneda Extranjera</b></p>";
-        // detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
-        // detalleFactura = detalleFactura + "<tr>";
-        // detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-        // detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-        // detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
-        // detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA Pendiente</span></span></td>";
-        // detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias Mora</span></span></td>";
-        // detalleFactura = detalleFactura + "</tr>";
+        let totalNeto = 0;
+        let totalIva = 0;
+        let contFac = 0;
 
-        // let totalNeto = 0;
-        // let totalIva = 0;
-        // let contFac = 0;
+        let totalNeto2 = 0;
+        let totalIva2 = 0;
+        let contFac2 = 0;
 
-        // let totalNeto2 = 0;
-        // let totalIva2 = 0;
-        // let contFac2 = 0;
+        let totalIvaFinal=0;
+        let codmon="";
 
-        // let totalIvaFinal=0;
-        // let codmon="";
+        console.log('-----------------------------------------');
+        console.log('Imprimiendo template modificado');
+        console.log(temp);
+        console.log('-----------------------------------------');
+        console.log('Imprimiendo detalle de factura');
+        console.log('-----------------------------------------');
+        console.log(detalleFactura);
+        console.log('-----------------------------------------');
 
         // async.each(datosFactura, function(value, callback) {
         //     codmon = value.COD_MON;
