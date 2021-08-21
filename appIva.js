@@ -56,7 +56,7 @@ const comenzar = async () => {
         request.on('row', function(row) {
             if (row.COD_CNP == "IMOR") {
                 console.log(row.COD_CNP);
-                // clientesSap();
+                clientesSap();
             }
         });
 
