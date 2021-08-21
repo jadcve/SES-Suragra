@@ -160,6 +160,7 @@ const log = async (contacto, ctc, codigo, error) => {
 }
 
 let l = 0;
+let cuenta = "Aviso Iva <avisoiva@suragra.com>";
 
 const email = async (contacto, datosContacto, datosFactura) => {
     console.log('Entrando a función email');
