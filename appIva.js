@@ -1,4 +1,5 @@
 const sql = require('mssql');
+const s = require('underscore.string');
 
 const sqlConfig = {
     user: 'usr_cna2',
