@@ -207,6 +207,8 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async.each(datosFactura, function(value, callback) {
+            console.log('Entrando a estructura de repetición');
+            console.log('+++++++++++++++++++++++++++++++++++++++++');
             codmon = value.COD_MON;
 
             if (value.FLG_TPO_REG == "IP" && value.COD_MON == "USD") {
