@@ -1,6 +1,7 @@
 const sql = require('mssql');
 const s = require('underscore.string');
 const moment = require('moment');
+const each = require('foreach');
 
 const sqlConfig = {
     user: 'usr_cna2',
