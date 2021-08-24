@@ -230,181 +230,181 @@ const email = async (contacto, datosContacto, datosFactura) => {
         console.log(detalleFactura);
         console.log('-----------------------------------------');
 
-        // async.each(datosFactura, function(value, callback) {
-        //     codmon = value.COD_MON;
+        async.each(datosFactura, function(value, callback) {
+            codmon = value.COD_MON;
 
-        //     if (value.FLG_TPO_REG == "IP" && value.COD_MON == "USD") {
-        //         contFac = contFac + 1;
+            if (value.FLG_TPO_REG == "IP" && value.COD_MON == "USD") {
+                contFac = contFac + 1;
 
-        //         totalIva = totalIva + (value.IMP_IVA_DOC);
-        //         totalNeto = totalNeto + (value.IMP_TOT_NTO);                                                   
+                totalIva = totalIva + (value.IMP_IVA_DOC);
+                totalNeto = totalNeto + (value.IMP_TOT_NTO);                                                   
 
-        //         detalleFactura = detalleFactura + "<tr>";
-        //         detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
-        //         detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
-        //         detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_NTO, {
-        //             fractionDigits: 2,
-        //             symbols: {
-        //                 decimal: ',',
-        //                 grouping: '.'
-        //             }
-        //         }) + "</span></span></td>";
-        //         detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_IVA_DOC, {
-        //             fractionDigits: 0,
-        //             symbols: {
-        //                 decimal: '.',
-        //                 grouping: '.'
-        //             }
-        //         }) + "</span></span></td>";
-        //         detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
-        //         detalleFactura = detalleFactura + "</tr>";
-        //     }
+                detalleFactura = detalleFactura + "<tr>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_NTO, {
+                    fractionDigits: 2,
+                    symbols: {
+                        decimal: ',',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_IVA_DOC, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
+                detalleFactura = detalleFactura + "</tr>";
+            }
 
-        //     if (value.FLG_TPO_REG == "IP" && value.COD_MON == "CLP") {
-        //         contFac2 = contFac2 + 1;
+            if (value.FLG_TPO_REG == "IP" && value.COD_MON == "CLP") {
+                contFac2 = contFac2 + 1;
 
-        //         totalIva2 = totalIva2 + (value.IMP_IVA_DOC);
-        //         totalNeto2 = totalNeto2 + (value.IMP_TOT_NTO);                       
+                totalIva2 = totalIva2 + (value.IMP_IVA_DOC);
+                totalNeto2 = totalNeto2 + (value.IMP_TOT_NTO);                       
 
-        //         detalleCredito = detalleCredito + "<tr>";
-        //         detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
-        //         detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
-        //         detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_NTO, {
-        //             fractionDigits: 0,
-        //             symbols: {
-        //                 decimal: '.',
-        //                 grouping: '.'
-        //             }
-        //         }) + "</span></span></td>";
-        //         detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_IVA_DOC, {
-        //             fractionDigits: 0,
-        //             symbols: {
-        //                 decimal: '.',
-        //                 grouping: '.'
-        //             }
-        //         }) + "</span></span></td>";
-        //         detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";                
-        //         detalleCredito = detalleCredito + "</tr>";
-        //     }
-        //         totalIvaFinal = totalIva + totalIva2;
-        //         callback();
-        //     },
-        //     function(err) {
-        //         if (contFac > 0) {
-        //             detalleFactura = detalleFactura + "<tr>";
-        //             detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-        //             detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-        //             detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>" + codmon + " "+ formatNumber(totalNeto, {
-        //                 fractionDigits: 2,
-        //                 symbols: {
-        //                     decimal: ',',
-        //                     grouping: '.'
-        //                 }
-        //             }) + "</b></span></span></td>";                    
-        //             detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP " + formatNumber(totalIva, {
-        //                 fractionDigits: 0,
-        //                 symbols: {
-        //                     decimal: '.',
-        //                     grouping: '.'
-        //                 }
-        //             }) + "</b></span></span></td>";
-        //             detalleFactura = detalleFactura + "<td width='100'>&nbsp;" + "</td>";
-        //             detalleFactura = detalleFactura + "</tr>";
-        //             detalleFactura = detalleFactura + "</table>";
-        //             detalleFactura = detalleFactura + "<p><br></p>";                                            
-        //         } else {
-        //             detalleFactura = detalleFactura + "</table>";
-        //             detalleFactura = detalleFactura + "<p>No existen documentos con IVA pendiente asociados a facturas con moneda extranjera</p>";
-        //         }
+                detalleCredito = detalleCredito + "<tr>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_NTO, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_IVA_DOC, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";                
+                detalleCredito = detalleCredito + "</tr>";
+            }
+                totalIvaFinal = totalIva + totalIva2;
+                callback();
+            },
+            function(err) {
+                if (contFac > 0) {
+                    detalleFactura = detalleFactura + "<tr>";
+                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>" + codmon + " "+ formatNumber(totalNeto, {
+                        fractionDigits: 2,
+                        symbols: {
+                            decimal: ',',
+                            grouping: '.'
+                        }
+                    }) + "</b></span></span></td>";                    
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP " + formatNumber(totalIva, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='100'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "</tr>";
+                    detalleFactura = detalleFactura + "</table>";
+                    detalleFactura = detalleFactura + "<p><br></p>";                                            
+                } else {
+                    detalleFactura = detalleFactura + "</table>";
+                    detalleFactura = detalleFactura + "<p>No existen documentos con IVA pendiente asociados a facturas con moneda extranjera</p>";
+                }
 
-        //         detalleFactura = detalleFactura + "<br><p><b>Facturacion  Moneda Local</b></p>";
-        //         detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
-        //         detalleFactura = detalleFactura + "<tr>";
-        //         detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-        //         detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-        //         detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
-        //         detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA Pendiente</span></span></td>";
-        //         detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias Mora</span></span></td>";
-        //         detalleFactura = detalleFactura + "</tr>";
-
-
-        //         if (contFac2 > 0) {
-        //             detalleFactura = detalleFactura + detalleCredito;
-        //             detalleFactura = detalleFactura + "<tr>";
-        //             detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-        //             detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-        //             detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>" + codmon + " "  + formatNumber(totalNeto2, {
-        //                 fractionDigits: 0,
-        //                 symbols: {
-        //                     decimal: '.',
-        //                     grouping: '.'
-        //                 }
-        //             }) + "</b></span></span></td>";                    
-        //             detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP "  + formatNumber(totalIva2, {
-        //                 fractionDigits: 0,
-        //                 symbols: {
-        //                     decimal: '.',
-        //                     grouping: '.'
-        //                 }
-        //             }) + "</b></span></span></td>";
-        //             detalleFactura = detalleFactura + "<td width='100'>&nbsp;" + "</td>";
-        //             detalleFactura = detalleFactura + "</tr>";
-        //             detalleFactura = detalleFactura + "</table>";
-        //             detalleFactura = detalleFactura + "<p><br></p>";                                                
-        //         } else {
-        //             detalleFactura = detalleFactura + "</table>";
-        //             detalleFactura = detalleFactura + "<p>No existen documentos con IVA pendiente asociados a facturas con moneda local</p>";
-        //         }
+                detalleFactura = detalleFactura + "<br><p><b>Facturacion  Moneda Local</b></p>";
+                detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+                detalleFactura = detalleFactura + "<tr>";
+                detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA Pendiente</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias Mora</span></span></td>";
+                detalleFactura = detalleFactura + "</tr>";
 
 
-        //         temp = temp.replace('&lt;TOTAL&gt;', formatNumber(totalIvaFinal, {
-        //                                                                             fractionDigits: 0,
-        //                                                                             symbols: {
-        //                                                                                 decimal: '.',
-        //                                                                                 grouping: '.'
-        //                                                                             }
-        //                                                                         }));
-        //         temp = temp.replace('&lt;FACTURAS&gt;', detalleFactura);
+                if (contFac2 > 0) {
+                    detalleFactura = detalleFactura + detalleCredito;
+                    detalleFactura = detalleFactura + "<tr>";
+                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>" + codmon + " "  + formatNumber(totalNeto2, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</b></span></span></td>";                    
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP "  + formatNumber(totalIva2, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='100'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "</tr>";
+                    detalleFactura = detalleFactura + "</table>";
+                    detalleFactura = detalleFactura + "<p><br></p>";                                                
+                } else {
+                    detalleFactura = detalleFactura + "</table>";
+                    detalleFactura = detalleFactura + "<p>No existen documentos con IVA pendiente asociados a facturas con moneda local</p>";
+                }
+
+
+                temp = temp.replace('&lt;TOTAL&gt;', formatNumber(totalIvaFinal, {
+                                                                                    fractionDigits: 0,
+                                                                                    symbols: {
+                                                                                        decimal: '.',
+                                                                                        grouping: '.'
+                                                                                    }
+                                                                                }));
+                temp = temp.replace('&lt;FACTURAS&gt;', detalleFactura);
                 
-        //         if (alttest == 1){
-        //             let send_args = {
-        //                 'Destination.ToAddresses.member.1': recipient_address,
-        //                 'Destination.ToAddresses.member.2': recipient_address2,
-        //                 'Destination.ToAddresses.member.3': recipient_address3,
-        //                 'Destination.ToAddresses.member.4': recipient_address4,
-        //                 'Destination.ToAddresses.member.5': recipient_address5,
-        //                 'Message.Body.Html.Charset': 'UTF-8',
-        //                 'Message.Body.Html.Data': temp,
-        //                 'Message.Subject.Charset': 'UTF-8',
-        //                 'Message.Subject.Data': asunto + " SURAGRA",
-        //                 'Source': sender_address
-        //             }
-        //         }
-        //         else{
-        //             let send_args = {
-        //                 'Destination.ToAddresses.member.1': recipient_address,
-        //                 'Message.Body.Html.Charset': 'UTF-8',
-        //                 'Message.Body.Html.Data': temp,
-        //                 'Message.Subject.Charset': 'UTF-8',
-        //                 'Message.Subject.Data': asunto + " SURAGRA",
-        //                 'Source': sender_address
-        //             }                   
-        //         }                                
+                if (alttest == 1){
+                    let send_args = {
+                        'Destination.ToAddresses.member.1': recipient_address,
+                        'Destination.ToAddresses.member.2': recipient_address2,
+                        'Destination.ToAddresses.member.3': recipient_address3,
+                        'Destination.ToAddresses.member.4': recipient_address4,
+                        'Destination.ToAddresses.member.5': recipient_address5,
+                        'Message.Body.Html.Charset': 'UTF-8',
+                        'Message.Body.Html.Data': temp,
+                        'Message.Subject.Charset': 'UTF-8',
+                        'Message.Subject.Data': asunto + " SURAGRA",
+                        'Source': sender_address
+                    }
+                }
+                else{
+                    let send_args = {
+                        'Destination.ToAddresses.member.1': recipient_address,
+                        'Message.Body.Html.Charset': 'UTF-8',
+                        'Message.Body.Html.Data': temp,
+                        'Message.Subject.Charset': 'UTF-8',
+                        'Message.Subject.Data': asunto + " SURAGRA",
+                        'Source': sender_address
+                    }                   
+                }                                
 
-        //         if (mandar == 1) {
-        //             console.log('Aquí se supone que se envió el email a:', contacto );
-        //             // setTimeout(function() {
-        //             //     ses.call('SendEmail', send_args, function(err, result) {
-        //             //         console.log(result);
-        //             //         if (err) {
-        //             //             log(contacto, datosContacto.COD_CTC, 1, err);
-        //             //         } else {
-        //             //             log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
-        //             //         }
-        //             //     });
-        //             // }, 200 * l);
-        //         }
-        //     });
+                if (mandar == 1) {
+                    console.log('Aquí se supone que se envía el email a:', contacto );
+                    // setTimeout(function() {
+                    //     ses.call('SendEmail', send_args, function(err, result) {
+                    //         console.log(result);
+                    //         if (err) {
+                    //             log(contacto, datosContacto.COD_CTC, 1, err);
+                    //         } else {
+                    //             log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
+                    //         }
+                    //     });
+                    // }, 200 * l);
+                }
+            });
     } catch (err) {
         log(contacto, datosContacto.COD_CTC, 1, err);
     }
