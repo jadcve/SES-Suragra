@@ -209,13 +209,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let totalIvaFinal=0;
         let codmon="";
 
-        console.log('+++++++++++++++++++++++++++++++++++++++++');
-        console.log('Hasta aquí llega la ejecución sin problemas');
-        console.log('+++++++++++++++++++++++++++++++++++++++++');
-
         async_lib.each(datosFactura, function(value, callback) {
-            console.log('Entrando a estructura de repetición');
-            console.log('+++++++++++++++++++++++++++++++++++++++++');
             codmon = value.COD_MON;
 
             if (value.FLG_TPO_REG == "IP" && value.COD_MON == "USD") {
