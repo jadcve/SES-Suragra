@@ -1,7 +1,7 @@
 const sql = require('mssql');
 const s = require('underscore.string');
 const moment = require('moment');
-const each = require('foreach');
+const async_lib = require('async');
 
 const sqlConfig = {
     user: 'usr_cna2',
@@ -212,7 +212,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
         console.log('Hasta aquí llega la ejecución sin problemas');
         console.log('+++++++++++++++++++++++++++++++++++++++++');
 
-        async.each(datosFactura, function(value, callback) {
+        async_lib.each(datosFactura, function(value, callback) {
             console.log('Entrando a estructura de repetición');
             console.log('+++++++++++++++++++++++++++++++++++++++++');
             codmon = value.COD_MON;
