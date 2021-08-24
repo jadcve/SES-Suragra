@@ -15,10 +15,9 @@ node ses_sendemail.js
 // Create the promise and SES service object
 
 // Import required AWS SDK clients and commands for Node.js
-// import { SendEmailCommand }  from "@aws-sdk/client-ses";
-const SendEmailCommand = require ('@aws-sdk/client-ses');
-// import { sesClient } from "./javascriptv3/example_code/ses/src/libs/sesClient.js";
-const sesClient = require ('./javascriptv3/example_code/ses/src/libs/sesClient.js');
+import { SendEmailCommand }  from "@aws-sdk/client-ses";
+import { sesClient } from "./javascriptv3/example_code/ses/src/libs/sesClient.js";
+
 // Set the parameters
 const params = {
   Destination: {
@@ -27,7 +26,7 @@ const params = {
       /* more items */
     ],
     ToAddresses: [
-      "jadcve@gmail.com", //RECEIVER_ADDRESS
+      "croxdesarrollo@gmail.com", //RECEIVER_ADDRESS
       /* more To-email addresses */
     ],
   },
