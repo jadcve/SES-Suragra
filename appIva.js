@@ -58,7 +58,6 @@ const comenzar = async () => {
 
         request.on('row', function(row) {
             if (row.COD_CNP == "IMOR") {
-                console.log(row.COD_CNP);
                 clientesSap();
             }
         });
@@ -80,7 +79,6 @@ const clientesSap = async () => {
         request.stream = true;
         request.execute('SP_SGR_CNA_CLT_ALT_AMZ_IVAP');
         request.on('row', function(row) {
-            console.log(row);
             contactosSap(row);
         });
     } catch(err) {
@@ -100,10 +98,8 @@ const contactosSap = async (contacto) => {
         request.execute('SP_SGR_CNA_CTC_CLT_SAP');
         request.on('row', function(row) {
             if (row.GLS_EML == "NO DEFINIDO") {
-                console.log(row.GLS_EML);
                 log(contacto, row.COD_CTC, 2, "EMAIL NO DEFINIDO");
             } else {
-                console.log(row.GLS_EML);
                 registrosContacto(contacto, row);
             }
         });
@@ -111,7 +107,6 @@ const contactosSap = async (contacto) => {
         request.on('done', function(returnValue) {
             if (request.parameters.CAN_CTC.value == 0) {
                 log(contacto, 0, 3, "NO EXISTEN CONTACTOS PARA NOTIFICAR");
-                console.log(request.parameters.CAN_CTC.value);
             };
         });
     } catch(err) {
@@ -129,11 +124,7 @@ const registrosContacto = async (contacto, datosContacto) => {
         request.stream = false;        
         request.input('COD_IDT_SAP', sql.VarChar, contacto.COD_IDT_SAP);
     
-        console.log("Contacto recibido:", contacto.COD_IDT_SAP);         
-    
         request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
-            console.log("registrosContacto previa a llamar función email");         
-            console.log("===============================================");         
             email(contacto, datosContacto, recordsets);
         });
     } catch(err) {
@@ -174,12 +165,9 @@ const email = async (contacto, datosContacto, datosFactura) => {
     }
     else{
         emailSend = "jadcve@gmail.com";
-        console.log("Contenido variable emailSend: ", emailSend);
     }
 
     try {
-        console.log('Entrando a bloque try de la función email');
-        console.log('+++++++++++++++++++++++++++++++++++++++++');
         let recipient_address = emailSend;
         let recipient_address2 = "aracelli@suragra.com";
         let recipient_address3 = "marcoantonio@suragra.com";
@@ -190,12 +178,8 @@ const email = async (contacto, datosContacto, datosFactura) => {
 
         let temp = template;
 
-        console.log('Imprimiendo nombre de contacto SAP');
-        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-        
         temp = temp.replace("&lt;&lt;CLIENTE&gt;&gt;", "<b>" + s.trim(contacto.NOM_CLT_SAP) + "</b>");
-        console.log('Contacto SAP:', s.trim(contacto.NOM_CLT_SAP));
-        // temp = temp.replace("&lt;&lt;MES&gt;&gt;", "<b>" + s.capitalize(moment().subtract(10, 'days').locale('es').format('MMMM')) + " " + moment().locale('es').format('YYYY') + "</b>");
+        temp = temp.replace("&lt;&lt;MES&gt;&gt;", "<b>" + s.capitalize(moment().subtract(10, 'days').locale('es').format('MMMM')) + " " + moment().locale('es').format('YYYY') + "</b>");
 
         let detalleFactura = "";
         let detalleCredito = "";
@@ -221,15 +205,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
 
         let totalIvaFinal=0;
         let codmon="";
-
-        console.log('-----------------------------------------');
-        console.log('Imprimiendo template modificado');
-        console.log(temp);
-        console.log('-----------------------------------------');
-        console.log('Imprimiendo detalle de factura');
-        console.log('-----------------------------------------');
-        console.log(detalleFactura);
-        console.log('-----------------------------------------');
 
         async.each(datosFactura, function(value, callback) {
             codmon = value.COD_MON;
