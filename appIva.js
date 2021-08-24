@@ -1,5 +1,6 @@
 const sql = require('mssql');
 const s = require('underscore.string');
+const formatNumber = require('simple-format-number');
 const moment = require('moment');
 const async_lib = require('async');
 
