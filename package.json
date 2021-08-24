@@ -1,6 +1,12 @@
 {
     "dependencies": {
         "@aws-sdk/client-ses": "^3.25.0",
-        "mssql": "^7.2.0"
+        "async": "^3.2.1",
+        "foreach": "^2.0.5",
+        "moment": "^2.29.1",
+        "mssql": "^7.2.0",
+        "simple-format-number": "^0.1.2",
+        "underscore": "^1.13.1",
+        "underscore.string": "^3.3.5"
     }
 }

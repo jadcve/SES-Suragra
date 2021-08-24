@@ -26,7 +26,7 @@ const params = {
       /* more items */
     ],
     ToAddresses: [
-      "croxdesarrollo@gmail.com", //RECEIVER_ADDRESS
+      "jadcve@gmail.com", //RECEIVER_ADDRESS
       /* more To-email addresses */
     ],
   },
