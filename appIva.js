@@ -22,6 +22,7 @@ const poolConnect = pool.connect();
 
 let template;
 let asunto;
+let mandar = 1;
 let alttest=2;
 
 const buscarTemplate = async () => {
