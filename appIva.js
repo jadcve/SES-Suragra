@@ -403,7 +403,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                             },
                             Subject: {
                                 Charset: 'UTF-8',
-                                Data: 'Email para ' + contacto.NOM_CLT_SAP + '<' + datosContacto.GLS_EML + '>'
+                                Data: 'Email para: ' + datosContacto.NOM_CTC + datosContacto.APM_CTC + ' <' + datosContacto.GLS_EML + '>'
                             }
                         },
                         Source: 'jadcve@gmail.com', /* required */
