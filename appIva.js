@@ -36,22 +36,14 @@ let alttest=2;
 
 const buscarTemplate = async () => {
     await poolConnect;
-    console.log('Entrando a función buscarTemplate');
-
+    
     try{
         const consulta = 'select * from TA_SGRA_ALRTA_FLUJO_CNTBL';
         let resultado = await pool.request().query(consulta);
         template = resultado.recordset[2].GLS_DET_ALT;
         asunto = resultado.recordset[2].GLS_ALT;
 
-        // resultados = {
-        //     template,
-        //     asunto
-        // }
-
         comenzar();
-
-        // return resultados;
     }catch(err){
         console.log(err);
     }
@@ -59,7 +51,7 @@ const buscarTemplate = async () => {
 
 const comenzar = async () => {
     await poolConnect;
-    console.log('Entrando a función comenzar');
+    
     try {
         let request = await pool.request();
         request.stream = true;
@@ -70,10 +62,6 @@ const comenzar = async () => {
                 clientesSap();
             }
         });
-
-        //console.log(request)
-
-      //  return resultados;
     } catch(err) {
         console.log(err);
     }
@@ -81,7 +69,6 @@ const comenzar = async () => {
 
 const clientesSap = async () => {
     await poolConnect;
-    console.log('Entrando a función clientesSap');
     
     try {
         let request = await pool.request();
@@ -97,7 +84,6 @@ const clientesSap = async () => {
 
 const contactosSap = async (contacto) => {
     await poolConnect;
-    console.log('Entrando a función contactosSap');
     
     try {
         let request = await pool.request();
@@ -125,7 +111,6 @@ const contactosSap = async (contacto) => {
 
 const registrosContacto = async (contacto, datosContacto) => {
     await poolConnect;
-    console.log('Entrando a función registrosContacto');
     
     try {
         let request = await pool.request();
@@ -143,8 +128,7 @@ const registrosContacto = async (contacto, datosContacto) => {
 
 const log = async (contacto, ctc, codigo, error) => {
     await poolConnect;
-    console.log('Entrando a función log');
-
+    
     try {
         let request = await pool.request();
 
@@ -161,8 +145,8 @@ const log = async (contacto, ctc, codigo, error) => {
     }
 }
 
+// Parámetros pre-email
 const cuenta = "Aviso Iva <avisoiva@suragra.com>";
-
 let l = 0;
 let params = null;
 
@@ -170,6 +154,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
     l = l + 1;
 
     let emailSend="";
+    
     if (alttest == 1){
         emailSend = datosContacto.GLS_EML;
     }
@@ -313,7 +298,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias Mora</span></span></td>";
                 detalleFactura = detalleFactura + "</tr>";
 
-
                 if (contFac2 > 0) {
                     detalleFactura = detalleFactura + detalleCredito;
                     detalleFactura = detalleFactura + "<tr>";
@@ -342,7 +326,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
                     detalleFactura = detalleFactura + "<p>No existen documentos con IVA pendiente asociados a facturas con moneda local</p>";
                 }
 
-
                 temp = temp.replace('&lt;TOTAL&gt;', formatNumber(totalIvaFinal, {
                                                                                     fractionDigits: 0,
                                                                                     symbols: {
@@ -353,30 +336,16 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 temp = temp.replace('&lt;FACTURAS&gt;', detalleFactura);
                 
                 if (alttest == 1){
-                    // let send_args = {
-                    //     'Destination.ToAddresses.member.1': recipient_address,
-                    //     'Destination.ToAddresses.member.2': recipient_address2,
-                    //     'Destination.ToAddresses.member.3': recipient_address3,
-                    //     'Destination.ToAddresses.member.4': recipient_address4,
-                    //     'Destination.ToAddresses.member.5': recipient_address5,
-                    //     'Destination.ToAddresses.member.5': recipient_address6,
-                    //     'Message.Body.Html.Charset': 'UTF-8',
-                    //     'Message.Body.Html.Data': temp,
-                    //     'Message.Subject.Charset': 'UTF-8',
-                    //     'Message.Subject.Data': asunto + " SURAGRA",
-                    //     'Source': sender_address
-                    // }
-                    // Create sendEmail params 
-                    let params = {
+                    params = {
                         Destination: { /* required */
                             CcAddresses: [
                             ],
                             ToAddresses: [
-                                // recipient_address,
-                                // recipient_address2,
-                                // recipient_address3,
-                                // recipient_address4,
-                                // recipient_address5,
+                                recipient_address,
+                                recipient_address2,
+                                recipient_address3,
+                                recipient_address4,
+                                recipient_address5,
                                 recipient_address6,
                             ]
                         },
@@ -404,14 +373,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
                     };
                 }
                 else{
-                    // let send_args = {
-                    //     'Destination.ToAddresses.member.1': recipient_address,
-                    //     'Message.Body.Html.Charset': 'UTF-8',
-                    //     'Message.Body.Html.Data': temp,
-                    //     'Message.Subject.Charset': 'UTF-8',
-                    //     'Message.Subject.Data': asunto + " SURAGRA",
-                    //     'Source': sender_address
-                    // }
                     params = {
                         Destination: { /* required */
                             CcAddresses: [
@@ -458,16 +419,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
                             function(err) {
                                 console.error(err, err.stack);
                         });
-                    // setTimeout(function() {
-                    //     ses.call('SendEmail', send_args, function(err, result) {
-                    //         console.log(result);
-                    //         if (err) {
-                    //             log(contacto, datosContacto.COD_CTC, 1, err);
-                    //         } else {
-                    //             log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
-                    //         }
-                    //     });
-                    // }, 200 * l);
                 }
             });
     } catch (err) {
@@ -476,9 +427,3 @@ const email = async (contacto, datosContacto, datosFactura) => {
 }
 
 buscarTemplate();
-// comenzar();
-clientesSap();
-//contactosSap();
-// registrosContacto();
-
-
