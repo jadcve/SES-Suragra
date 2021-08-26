@@ -403,24 +403,19 @@ const email = async (contacto, datosContacto, datosFactura) => {
                     };
                 }
                 else{
-                    let send_args = {
-                        'Destination.ToAddresses.member.1': recipient_address,
-                        'Message.Body.Html.Charset': 'UTF-8',
-                        'Message.Body.Html.Data': temp,
-                        'Message.Subject.Charset': 'UTF-8',
-                        'Message.Subject.Data': asunto + " SURAGRA",
-                        'Source': sender_address
-                    }
+                    // let send_args = {
+                    //     'Destination.ToAddresses.member.1': recipient_address,
+                    //     'Message.Body.Html.Charset': 'UTF-8',
+                    //     'Message.Body.Html.Data': temp,
+                    //     'Message.Subject.Charset': 'UTF-8',
+                    //     'Message.Subject.Data': asunto + " SURAGRA",
+                    //     'Source': sender_address
+                    // }
                     let params = {
                         Destination: { /* required */
                             CcAddresses: [
                             ],
                             ToAddresses: [
-                                // recipient_address,
-                                // recipient_address2,
-                                // recipient_address3,
-                                // recipient_address4,
-                                // recipient_address5,
                                 recipient_address,
                             ]
                         },
