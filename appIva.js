@@ -1,9 +1,9 @@
-// const sql = require('mssql');
+const sql = require('mssql');
 const s = require('underscore.string');
 // const formatNumber = require('simple-format-number');
 // const moment = require('moment');
 // const async_lib = require('async');
-import {sql} from "mssql";
+// import {sql} from "mssql";
 // import {s} from "underscore.string";
 import {formatNumber} from "simple-format-number";
 import {moment} from "moment";
