@@ -32,7 +32,7 @@ const poolConnect = pool.connect();
 let template;
 let asunto;
 let mandar = 1;
-let alttest=2;
+let alttest=1;
 
 const buscarTemplate = async () => {
     await poolConnect;
@@ -352,18 +352,55 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 temp = temp.replace('&lt;FACTURAS&gt;', detalleFactura);
                 
                 if (alttest == 1){
-                    let send_args = {
-                        'Destination.ToAddresses.member.1': recipient_address,
-                        'Destination.ToAddresses.member.2': recipient_address2,
-                        'Destination.ToAddresses.member.3': recipient_address3,
-                        'Destination.ToAddresses.member.4': recipient_address4,
-                        'Destination.ToAddresses.member.5': recipient_address5,
-                        'Message.Body.Html.Charset': 'UTF-8',
-                        'Message.Body.Html.Data': temp,
-                        'Message.Subject.Charset': 'UTF-8',
-                        'Message.Subject.Data': asunto + " SURAGRA",
-                        'Source': sender_address
-                    }
+                    // let send_args = {
+                    //     'Destination.ToAddresses.member.1': recipient_address,
+                    //     'Destination.ToAddresses.member.2': recipient_address2,
+                    //     'Destination.ToAddresses.member.3': recipient_address3,
+                    //     'Destination.ToAddresses.member.4': recipient_address4,
+                    //     'Destination.ToAddresses.member.5': recipient_address5,
+                    //     'Destination.ToAddresses.member.5': recipient_address6,
+                    //     'Message.Body.Html.Charset': 'UTF-8',
+                    //     'Message.Body.Html.Data': temp,
+                    //     'Message.Subject.Charset': 'UTF-8',
+                    //     'Message.Subject.Data': asunto + " SURAGRA",
+                    //     'Source': sender_address
+                    // }
+                    // Create sendEmail params 
+                    let params = {
+                        Destination: { /* required */
+                            CcAddresses: [
+                            ],
+                            ToAddresses: [
+                                // recipient_address,
+                                // recipient_address2,
+                                // recipient_address3,
+                                // recipient_address4,
+                                // recipient_address5,
+                                recipient_address6,
+                            ]
+                        },
+                        Message: { /* required */
+                            Body: { /* required */
+                                Html: {
+                                    Charset: "UTF-8",
+                                    Data: temp
+                                },
+                                Text: {
+                                    Charset: "UTF-8",
+                                    Data: ''
+                                }
+                            },
+                            Subject: {
+                                Charset: 'UTF-8',
+                                Data: asunto + " SURAGRA"
+                            }
+                        },
+                        Source: sender_address, /* required */
+                        ReplyToAddresses: [
+                            sender_address
+                            /* more items */
+                        ],
+                    };
                 }
                 else{
                     let send_args = {
@@ -377,42 +414,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 }                                
 
                 if (mandar == 1) {
-                    console.log('Aquí se envía un email a', datosContacto);
-                    // Create sendEmail params 
-                    let params = {
-                        Destination: { /* required */
-                            CcAddresses: [
-                                'croxdesarrollo@gmail.com',
-                                /* more items */
-                            ],
-                            ToAddresses: [
-                                'jadcve@gmail.com',
-                                /* more items */
-                            ]
-                        },
-                        Message: { /* required */
-                            Body: { /* required */
-                                Html: {
-                                    Charset: "UTF-8",
-                                    Data: temp
-                                },
-                                Text: {
-                                    Charset: "UTF-8",
-                                    Data: "TEXT_FORMAT_BODY"
-                                }
-                            },
-                            Subject: {
-                                Charset: 'UTF-8',
-                                Data: 'Email para: ' + datosContacto.NOM_CTC + ' ' + datosContacto.APM_CTC + ' <' + datosContacto.GLS_EML + '>'
-                            }
-                        },
-                        Source: 'jadcve@gmail.com', /* required */
-                        ReplyToAddresses: [
-                            'jadcve@gmail.com',
-                            /* more items */
-                        ],
-                    };
-
                     // Create the promise and SES service object
                     let sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
 
