@@ -17,5 +17,5 @@ import  { SESClient }  from  "@aws-sdk/client-ses";
 const REGION = "us-west-2"; //e.g. "us-east-1"
 // Create SES service object.
 const sesClient = new SESClient({ region: REGION });
-export  { sesClient };
+module.exports = { sesClient };
 // snippet-end:[ses.JavaScript.createclientv3]
