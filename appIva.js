@@ -1,3 +1,5 @@
+const SendEmailCommand =  require ('@aws-sdk/client-ses');
+
 const sql = require('mssql');
 const s = require('underscore.string');
 const formatNumber = require('simple-format-number');
@@ -154,6 +156,12 @@ const log = async (contacto, ctc, codigo, error) => {
         console.log(err);
     }
 }
+
+//CREDENCIALES 
+const sesClient = require ('./javascriptv3/example_code/ses/src/libs/sesClient.js');
+// const ses = aws.createSESClient(user, password); //Credenciales SES
+const cuenta = "Aviso Iva <avisoiva@suragra.com>";
+
 
 let l = 0;
 let cuenta = "Aviso Iva <avisoiva@suragra.com>";
@@ -370,22 +378,69 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 }                                
 
                 if (mandar == 1) {
-                    setTimeout(function() {
-                        ses.call('SendEmail', send_args, function(err, result) {
-                            console.log(result);
-                            if (err) {
-                                log(contacto, datosContacto.COD_CTC, 1, err);
-                            } else {
-                                log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
-                            }
-                        });
-                    }, 200 * l);
+                    run();
+                    // setTimeout(function() {
+                    //     ses.call('SendEmail', send_args, function(err, result) {
+                    //         console.log(result);
+                    //         if (err) {
+                    //             log(contacto, datosContacto.COD_CTC, 1, err);
+                    //         } else {
+                    //             log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
+                    //         }
+                    //     });
+                    // }, 200 * l);
                 }
             });
     } catch (err) {
         log(contacto, datosContacto.COD_CTC, 1, err);
     }
 }
+
+// Set the parameters
+const params = {
+    Destination: {
+      /* required */
+      CcAddresses: [
+        /* more items */
+      ],
+      ToAddresses: [
+        "croxdesarrollo@gmail.com", //RECEIVER_ADDRESS
+        /* more To-email addresses */
+      ],
+    },
+    Message: {
+      /* required */
+      Body: {
+        /* required */
+        Html: {
+          Charset: "UTF-8",
+          Data: "HTML_FORMAT_BODY",
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: "TEXT_FORMAT_BODY",
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: "EMAIL de prueba SES",
+      },
+    },
+    Source: "jadcve@gmail.com", // SENDER_ADDRESS
+    ReplyToAddresses: [
+      "jadcve@gmail.com"
+    ],
+  };
+
+const run = async () => {
+    try {
+      const data = await sesClient.send(new SendEmailCommand(params));
+      console.log("Success", data);
+      return data; // For unit tests.
+    } catch (err) {
+      console.log("Error", err);
+    }
+  };
 
 
 buscarTemplate();
