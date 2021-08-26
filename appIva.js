@@ -414,10 +414,12 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         .then(
                             function(data) {
                                 console.log(data.MessageId);
+                                log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
                             })
                         .catch(
                             function(err) {
                                 console.error(err, err.stack);
+                                log(contacto, datosContacto.COD_CTC, 1, err);
                         });
                 }
             });
