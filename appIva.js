@@ -164,6 +164,7 @@ const log = async (contacto, ctc, codigo, error) => {
 const cuenta = "Aviso Iva <avisoiva@suragra.com>";
 
 let l = 0;
+let params = null;
 
 const email = async (contacto, datosContacto, datosFactura) => {
     l = l + 1;
@@ -411,7 +412,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                     //     'Message.Subject.Data': asunto + " SURAGRA",
                     //     'Source': sender_address
                     // }
-                    let params = {
+                    params = {
                         Destination: { /* required */
                             CcAddresses: [
                             ],
