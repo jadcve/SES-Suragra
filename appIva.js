@@ -1,5 +1,5 @@
-import { SendEmailCommand }  from "@aws-sdk/client-ses";
-import { sesClient } from "./javascriptv3/example_code/ses/src/libs/sesClient.js";
+const { SendEmailCommand } = require("@aws-sdk/client-ses");
+const { sesClient } = require("./javascriptv3/example_code/ses/src/libs/sesClient.js");
 
 const sql = require('mssql');
 const s = require('underscore.string');
