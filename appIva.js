@@ -1,4 +1,5 @@
-const SendEmailCommand =  require ('@aws-sdk/client-ses');
+import { SendEmailCommand }  from "@aws-sdk/client-ses";
+import { sesClient } from "./javascriptv3/example_code/ses/src/libs/sesClient.js";
 
 const sql = require('mssql');
 const s = require('underscore.string');
@@ -157,9 +158,6 @@ const log = async (contacto, ctc, codigo, error) => {
     }
 }
 
-//CREDENCIALES 
-const sesClient = require ('./javascriptv3/example_code/ses/src/libs/sesClient.js');
-// const ses = aws.createSESClient(user, password); //Credenciales SES
 const cuenta = "Aviso Iva <avisoiva@suragra.com>";
 
 let l = 0;
