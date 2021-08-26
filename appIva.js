@@ -32,7 +32,7 @@ const poolConnect = pool.connect();
 let template;
 let asunto;
 let mandar = 1;
-let alttest=1;
+let alttest=2;
 
 const buscarTemplate = async () => {
     await poolConnect;
@@ -410,7 +410,42 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         'Message.Subject.Charset': 'UTF-8',
                         'Message.Subject.Data': asunto + " SURAGRA",
                         'Source': sender_address
-                    }                   
+                    }
+                    let params = {
+                        Destination: { /* required */
+                            CcAddresses: [
+                            ],
+                            ToAddresses: [
+                                // recipient_address,
+                                // recipient_address2,
+                                // recipient_address3,
+                                // recipient_address4,
+                                // recipient_address5,
+                                recipient_address,
+                            ]
+                        },
+                        Message: { /* required */
+                            Body: { /* required */
+                                Html: {
+                                    Charset: "UTF-8",
+                                    Data: temp
+                                },
+                                Text: {
+                                    Charset: "UTF-8",
+                                    Data: ''
+                                }
+                            },
+                            Subject: {
+                                Charset: 'UTF-8',
+                                Data: asunto + " SURAGRA"
+                            }
+                        },
+                        Source: sender_address, /* required */
+                        ReplyToAddresses: [
+                            sender_address
+                            /* more items */
+                        ],
+                    };                   
                 }                                
 
                 if (mandar == 1) {
