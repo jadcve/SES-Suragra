@@ -1,5 +1,4 @@
 {
-    "type": "module",
     "dependencies": {
         "@aws-sdk/client-ses": "^3.25.0",
         "async": "^3.2.1",
