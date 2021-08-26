@@ -377,7 +377,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 }                                
 
                 if (mandar == 1) {
-                    console.log('Aquí se envía un email a', contacto);
+                    console.log('Aquí se envía un email a', datosContacto);
                     // Create sendEmail params 
                     let params = {
                         Destination: { /* required */
@@ -403,7 +403,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                             },
                             Subject: {
                                 Charset: 'UTF-8',
-                                Data: 'Email para ' + contacto.NOM_CLT_SAP
+                                Data: 'Email para ' + contacto.NOM_CLT_SAP + '<' + datosContacto.GLS_EML + '>'
                             }
                         },
                         Source: 'jadcve@gmail.com', /* required */
