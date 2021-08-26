@@ -162,9 +162,7 @@ const sesClient = require ('./javascriptv3/example_code/ses/src/libs/sesClient.j
 // const ses = aws.createSESClient(user, password); //Credenciales SES
 const cuenta = "Aviso Iva <avisoiva@suragra.com>";
 
-
 let l = 0;
-let cuenta = "Aviso Iva <avisoiva@suragra.com>";
 
 const email = async (contacto, datosContacto, datosFactura) => {
     l = l + 1;
