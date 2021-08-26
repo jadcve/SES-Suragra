@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 // Set the region 
 const REGION = "us-west-2"; //e.g. "us-east-1"
-AWS.config.update({region: 'REGION'});
+AWS.config.update({region: REGION});
 
 
 const sql = require('mssql');
