@@ -394,7 +394,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                             Body: { /* required */
                                 Html: {
                                     Charset: "UTF-8",
-                                    Data: detalleFactura
+                                    Data: temp
                                 },
                                 Text: {
                                     Charset: "UTF-8",
