@@ -1,3 +1,9 @@
+const AWS = require('aws-sdk');
+// Set the region 
+const REGION = "us-west-2"; //e.g. "us-east-1"
+AWS.config.update({region: 'REGION'});
+
+
 const sql = require('mssql');
 const s = require('underscore.string');
 const formatNumber = require('simple-format-number');
@@ -372,6 +378,54 @@ const email = async (contacto, datosContacto, datosFactura) => {
 
                 if (mandar == 1) {
                     console.log('Aquí se envía un email a', contacto);
+                    // Create sendEmail params 
+                    let params = {
+                        Destination: { /* required */
+                            CcAddresses: [
+                                'croxdesarrollo@gmail.com',
+                                /* more items */
+                            ],
+                            ToAddresses: [
+                                'jadcve@gmail.com',
+                                /* more items */
+                            ]
+                        },
+                        Message: { /* required */
+                            Body: { /* required */
+                                Html: {
+                                    Charset: "UTF-8",
+                                    Data: detalleFactura
+                                },
+                                Text: {
+                                    Charset: "UTF-8",
+                                    Data: "TEXT_FORMAT_BODY"
+                                }
+                            },
+                            Subject: {
+                                Charset: 'UTF-8',
+                                Data: 'Test email'
+                            }
+                        },
+                        Source: 'jadcve@gmail.com', /* required */
+                        ReplyToAddresses: [
+                            'jadcve@gmail.com',
+                            /* more items */
+                        ],
+                    };
+
+                    // Create the promise and SES service object
+                    let sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+
+                    // Handle promise's fulfilled/rejected states
+                    sendPromise
+                        .then(
+                            function(data) {
+                                console.log(data.MessageId);
+                            })
+                        .catch(
+                            function(err) {
+                                console.error(err, err.stack);
+                        });
                     // setTimeout(function() {
                     //     ses.call('SendEmail', send_args, function(err, result) {
                     //         console.log(result);
