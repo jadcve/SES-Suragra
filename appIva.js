@@ -159,7 +159,6 @@ let l = 0;
 let cuenta = "Aviso Iva <avisoiva@suragra.com>";
 
 const email = async (contacto, datosContacto, datosFactura) => {
-    console.log('Entrando a función email');
     l = l + 1;
 
     let emailSend="";
@@ -371,17 +370,16 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 }                                
 
                 if (mandar == 1) {
-                    console.log('Aquí se supone que se envía el email a:', contacto );
-                    // setTimeout(function() {
-                    //     ses.call('SendEmail', send_args, function(err, result) {
-                    //         console.log(result);
-                    //         if (err) {
-                    //             log(contacto, datosContacto.COD_CTC, 1, err);
-                    //         } else {
-                    //             log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
-                    //         }
-                    //     });
-                    // }, 200 * l);
+                    setTimeout(function() {
+                        ses.call('SendEmail', send_args, function(err, result) {
+                            console.log(result);
+                            if (err) {
+                                log(contacto, datosContacto.COD_CTC, 1, err);
+                            } else {
+                                log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
+                            }
+                        });
+                    }, 200 * l);
                 }
             });
     } catch (err) {
