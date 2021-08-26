@@ -12,13 +12,10 @@ Inputs (replace in code):
 
 */
 // snippet-start:[ses.JavaScript.createclientv3]
-// import  { SESClient }  from  "@aws-sdk/client-ses";
-const  { SESClient }  =   require("@aws-sdk/client-ses");
+import  { SESClient }  from  "@aws-sdk/client-ses";
 // Set the AWS Region.
 const REGION = "us-west-2"; //e.g. "us-east-1"
 // Create SES service object.
 const sesClient = new SESClient({ region: REGION });
-module.exports = { 
-    sesClient 
-}
+export  { sesClient };
 // snippet-end:[ses.JavaScript.createclientv3]

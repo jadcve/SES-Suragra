@@ -1,11 +1,13 @@
-const { SendEmailCommand } = require("@aws-sdk/client-ses");
-const { sesClient } = require("./javascriptv3/example_code/ses/src/libs/sesClient.js");
-
-const sql = require('mssql');
-const s = require('underscore.string');
-const formatNumber = require('simple-format-number');
-const moment = require('moment');
-const async_lib = require('async');
+// const sql = require('mssql');
+// const s = require('underscore.string');
+// const formatNumber = require('simple-format-number');
+// const moment = require('moment');
+// const async_lib = require('async');
+import {sql} from "mssql";
+import {s} from "underscore.string";
+import {formatNumber} from "simple-format-number";
+import {moment} from "moment";
+import {async_lib} from "async";
 
 const sqlConfig = {
     user: 'usr_cna2',
@@ -374,7 +376,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 }                                
 
                 if (mandar == 1) {
-                    run();
+                    console.log('Aquí se envía un email a', contacto);
                     // setTimeout(function() {
                     //     ses.call('SendEmail', send_args, function(err, result) {
                     //         console.log(result);
@@ -391,53 +393,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
         log(contacto, datosContacto.COD_CTC, 1, err);
     }
 }
-
-// Set the parameters
-const params = {
-    Destination: {
-      /* required */
-      CcAddresses: [
-        /* more items */
-      ],
-      ToAddresses: [
-        "croxdesarrollo@gmail.com", //RECEIVER_ADDRESS
-        /* more To-email addresses */
-      ],
-    },
-    Message: {
-      /* required */
-      Body: {
-        /* required */
-        Html: {
-          Charset: "UTF-8",
-          Data: "HTML_FORMAT_BODY",
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: "TEXT_FORMAT_BODY",
-        },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: "EMAIL de prueba SES",
-      },
-    },
-    Source: "jadcve@gmail.com", // SENDER_ADDRESS
-    ReplyToAddresses: [
-      "jadcve@gmail.com"
-    ],
-  };
-
-const run = async () => {
-    try {
-      const data = await sesClient.send(new SendEmailCommand(params));
-      console.log("Success", data);
-      return data; // For unit tests.
-    } catch (err) {
-      console.log("Error", err);
-    }
-  };
-
 
 buscarTemplate();
 // comenzar();
