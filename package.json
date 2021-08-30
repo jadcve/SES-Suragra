@@ -1,9 +1,7 @@
 {
-    "type": "module",
     "dependencies": {
-        "@aws-sdk/client-ses": "^3.25.0",
         "async": "^3.2.1",
-        "aws-sdk": "^2.974.0",
+        "aws-sdk": "^2.976.0",
         "foreach": "^2.0.5",
         "moment": "^2.29.1",
         "mssql": "^6.3.2",

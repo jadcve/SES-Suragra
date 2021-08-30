@@ -32,7 +32,7 @@ const poolConnect = pool.connect();
 let template;
 let asunto;
 let mandar = 1;
-let alttest=1;
+let alttest=2;
 
 const buscarTemplate = async () => {
     await poolConnect;
@@ -40,8 +40,8 @@ const buscarTemplate = async () => {
     try{
         const consulta = 'select * from TA_SGRA_ALRTA_FLUJO_CNTBL';
         let resultado = await pool.request().query(consulta);
-        template = resultado.recordset[2].GLS_DET_ALT;
-        asunto = resultado.recordset[2].GLS_ALT;
+        template = resultado.recordset[1].GLS_DET_ALT;
+        asunto = resultado.recordset[1].GLS_ALT;
 
         comenzar();
     }catch(err){
@@ -58,7 +58,7 @@ const comenzar = async () => {
         request.execute('SP_SGR_CNA_ALT_CTB_AMZ');
 
         request.on('row', function(row) {
-            if (row.COD_CNP == "IMOR") {
+            if (row.COD_CNP == "NMOR") {
                 clientesSap();
             }
         });
@@ -73,7 +73,7 @@ const clientesSap = async () => {
     try {
         let request = await pool.request();
         request.stream = true;
-        request.execute('SP_SGR_CNA_CLT_ALT_AMZ_IVAP');
+        request.execute('SP_SGR_CNA_CLT_ALT_AMZ_NETP');
         request.on('row', function(row) {
             contactosSap(row);
         });
@@ -136,7 +136,7 @@ const log = async (contacto, ctc, codigo, error) => {
         request.input('COD_IDT_SAP', sql.VarChar, contacto.COD_IDT_SAP);
         request.input('COD_IDT_CTC', sql.VarChar, ctc);
         request.input('FLG_EML_ENV', sql.Int, codigo);
-        request.input('COD_CNP', sql.VarChar, "IMOR");
+        request.input('COD_CNP', sql.VarChar, "NMOR");
         request.input('GLS_ERR', sql.VarChar, error);
         request.execute('SP_SGR_INS_TRZ_ALT', function(err, recordsets, returnValue, affected) {
         });
@@ -146,7 +146,7 @@ const log = async (contacto, ctc, codigo, error) => {
 }
 
 // Parámetros pre-email
-const cuenta = "Aviso Iva <avisoiva@suragra.com>";
+const cuenta = "Cobranza Suragra <cobranza@suragra.com>";
 let l = 0;
 let params = null;
 
@@ -184,149 +184,119 @@ const email = async (contacto, datosContacto, datosFactura) => {
         detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
         detalleFactura = detalleFactura + "<tr>";
         detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-        detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
-        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA Pendiente</span></span></td>";
-        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias Mora</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Vencimiento</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias de Mora</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='200' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO Pendiente</span></span></td>";
         detalleFactura = detalleFactura + "</tr>";
 
         let totalNeto = 0;
-        let totalIva = 0;
         let contFac = 0;
 
         let totalNeto2 = 0;
-        let totalIva2 = 0;
         let contFac2 = 0;
 
-        let totalIvaFinal=0;
+        let totalNetoFinal=0;
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
             codmon = value.COD_MON;
 
-            if (value.FLG_TPO_REG == "IP" && value.COD_MON == "USD") {
+            if (value.FLG_TPO_REG == "NP" && value.COD_MON == "USD") {
                 contFac = contFac + 1;
-
-                totalIva = totalIva + (value.IMP_IVA_DOC);
-                totalNeto = totalNeto + (value.IMP_TOT_NTO);                                                   
+                totalNeto = totalNeto + (value.IMP_TOT_PEN);                                                   
 
                 detalleFactura = detalleFactura + "<tr>";
                 detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
                 detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_NTO, {
-                    fractionDigits: 2,
-                    symbols: {
-                        decimal: ',',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_IVA_DOC, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_VEN + "</span></span></td>";
                 detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.IMP_SDO_PEN_EML + "</span></span></td>";
                 detalleFactura = detalleFactura + "</tr>";
             }
 
-            if (value.FLG_TPO_REG == "IP" && value.COD_MON == "CLP") {
+            if (value.FLG_TPO_REG == "NP" && value.COD_MON == "CLP") {
                 contFac2 = contFac2 + 1;
-
-                totalIva2 = totalIva2 + (value.IMP_IVA_DOC);
-                totalNeto2 = totalNeto2 + (value.IMP_TOT_NTO);                       
+                totalNeto2 = totalNeto2 + (value.IMP_TOT_PEN);                       
 
                 detalleCredito = detalleCredito + "<tr>";
                 detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
                 detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_NTO, {
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_VEN + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
+                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_PEN, {
                     fractionDigits: 0,
                     symbols: {
                         decimal: '.',
                         grouping: '.'
                     }
                 }) + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_IVA_DOC, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";                
                 detalleCredito = detalleCredito + "</tr>";
             }
-                totalIvaFinal = totalIva + totalIva2;
+                totalNetoFinal = totalNeto + totalNeto2;
                 callback();
             },
             function(err) {
                 if (contFac > 0) {
                     detalleFactura = detalleFactura + "<tr>";
                     detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>" + codmon + " "+ formatNumber(totalNeto, {
+                    detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Total:" + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='200'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>"+ codmon + " " + formatNumber(totalNeto, {
                         fractionDigits: 2,
                         symbols: {
                             decimal: ',',
                             grouping: '.'
                         }
-                    }) + "</b></span></span></td>";                    
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP " + formatNumber(totalIva, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
                     }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'>&nbsp;" + "</td>";
                     detalleFactura = detalleFactura + "</tr>";
                     detalleFactura = detalleFactura + "</table>";
                     detalleFactura = detalleFactura + "<p><br></p>";                                            
                 } else {
                     detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existen documentos con IVA pendiente asociados a facturas con moneda extranjera</p>";
+                    detalleFactura = detalleFactura + "<p>No existen documentos con NETO pendiente asociados a facturas con moneda extranjera</p>";
                 }
 
                 detalleFactura = detalleFactura + "<br><p><b>Facturacion  Moneda Local</b></p>";
                 detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
                 detalleFactura = detalleFactura + "<tr>";
                 detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA Pendiente</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias Mora</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Vencimiento</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias de Mora</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='200' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO Pendiente</span></span></td>";
                 detalleFactura = detalleFactura + "</tr>";
 
                 if (contFac2 > 0) {
                     detalleFactura = detalleFactura + detalleCredito;
-                    detalleFactura = detalleFactura + "<tr>";
                     detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>" + codmon + " "  + formatNumber(totalNeto2, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";                    
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP "  + formatNumber(totalIva2, {
+                    detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
+                    detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Total:" + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP "  + formatNumber(totalNeto2, {
                         fractionDigits: 0,
                         symbols: {
                             decimal: '.',
                             grouping: '.'
                         }
                     }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'>&nbsp;" + "</td>";
                     detalleFactura = detalleFactura + "</tr>";
                     detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p><br></p>";                                                
+                    detalleFactura = detalleFactura + "<p><br></p>";                                                 
                 } else {
                     detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existen documentos con IVA pendiente asociados a facturas con moneda local</p>";
+                    detalleFactura = detalleFactura + "<p>No existen documentos con NETO pendiente asociados a facturas con moneda local</p>";
                 }
 
-                temp = temp.replace('&lt;TOTAL&gt;', formatNumber(totalIvaFinal, {
+                temp = temp.replace('&lt;TOTALUSD&gt;', formatNumber(totalNeto, {
+                                                                                    fractionDigits: 2,
+                                                                                    symbols: {
+                                                                                        decimal: ',',
+                                                                                        grouping: '.'
+                                                                                    }
+                                                                                }));
+                temp = temp.replace('&lt;TOTALCLP&gt;', formatNumber(totalNeto2, {
                                                                                     fractionDigits: 0,
                                                                                     symbols: {
                                                                                         decimal: '.',
