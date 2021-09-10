@@ -177,17 +177,20 @@ const email = async (contacto, datosContacto, datosFactura) => {
         temp = temp.replace("&lt;&lt;MES&gt;&gt;", "<b>" + s.capitalize(moment().subtract(10, 'days').locale('es').format('MMMM')) + " " + moment().locale('es').format('YYYY') + "</b>");
 
         let detalleFactura = "";
+        let detalleFacturaLocal = "";
         let detalleCredito = "";
+        let detalleCreditoLocal ="";
+        let detalleDebito = "";
+        let detalleDebitoLocal="";
 
         detalleFactura = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>SurAgra</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/></head><body style="margin: 0; padding: 0;">';
-        detalleFactura = detalleFactura + "<p><br><b>Facturacion Moneda Extranjera</b></p>";
+        detalleFactura = detalleFactura + "<p><br><b>Facturas Moneda Extranjera</b></p>";
         detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
         detalleFactura = detalleFactura + "<tr>";
         detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-        detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-        detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Vencimiento</span></span></td>";
-        detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias de Mora</span></span></td>";
-        detalleFactura = detalleFactura + "<td width='200' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO Pendiente</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
+        detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
         detalleFactura = detalleFactura + "</tr>";
 
         let totalNeto = 0;
@@ -220,7 +223,9 @@ const email = async (contacto, datosContacto, datosFactura) => {
         async_lib.each(datosFactura, function(value, callback) {
             codmon = value.COD_MON;
 
+           
             if (value.FLG_TPO_DOC_CTB == "FAC" && value.COD_MON == "USD") {
+                console.log("entre if 1")
                 contFac = contFac + 1;
                 totalIva = totalIva + (value.IMP_IVA_DOC);
                 totalNeto = totalNeto + (value.IMP_TOT_NTO);
@@ -228,13 +233,26 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 detalleFactura = detalleFactura + "<tr>";
                 detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
                 detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_VEN + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.IMP_SDO_PEN_EML + "</span></span></td>";
-                detalleFactura = detalleFactura + "</tr>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_IVA_DOC, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";
+                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_NTO, {
+                    fractionDigits: 2,
+                    symbols: {
+                        decimal: ',',
+                        grouping: '.'
+                    }
+                }) + "</span></span></td>";                    
+                detalleFactura = detalleFactura + "</tr>";  
             }
+            
 
             if (value.COD_MON == "CLP" && value.FLG_TPO_DOC_CTB == "FAC") {
+             
                 contFacLocal = contFacLocal + 1;
 
                 totalIvaLocal = totalIvaLocal + (value.IMP_IVA_DOC);
@@ -261,6 +279,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
             }            
                 
             if (value.COD_MON == "USD" && value.FLG_TPO_DOC_CTB == "NCR") {
+                
                 contFac2 = contFac2 + 1;
 
                 totalIva2 = totalIva2 + (value.IMP_IVA_DOC);
@@ -288,6 +307,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
 
             if (value.COD_MON == "CLP" && value.FLG_TPO_DOC_CTB == "NCR") {
                 contFac2Local = contFac2Local + 1;
+                
 
                 totalIva2Local = totalIva2Local + (value.IMP_IVA_DOC);
                 totalNeto2Local = totalNeto2Local + (value.IMP_TOT_NTO);                                        
@@ -310,10 +330,11 @@ const email = async (contacto, datosContacto, datosFactura) => {
                     }
                 }) + "</span></span></td>";
                 detalleCreditoLocal = detalleCreditoLocal + "</tr>";
-            }            
+            }   
 
             if (value.COD_MON == "USD" && value.FLG_TPO_DOC_CTB == "NDB") {
                 contFac3 = contFac3 + 1;
+                
 
                 totalIva3 = totalIva3 + (value.IMP_IVA_DOC);
                 totalNeto3 = totalNeto3 + (value.IMP_TOT_NTO);
@@ -340,6 +361,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
 
             if (value.COD_MON == "CLP" && value.FLG_TPO_DOC_CTB == "NDB") {
                 contFac3Local = contFac3Local + 1;
+               
 
                 totalIva3Local = totalIva3Local + (value.IMP_IVA_DOC);
                 totalNeto3Local = totalNeto3Local + (value.IMP_TOT_NTO);
@@ -362,7 +384,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                     }
                 }) + "</span></span></td>";
                 detalleDebitoLocal = detalleDebitoLocal + "</tr>";                    
-            }       
+            }        
 
                 totalIvaFinal = totalIva + totalIvaLocal + totalIva2 + totalIva2Local + totalIva3 + totalIva3Local;
                 totalNetoFinal = totalNeto + totalNeto2 + totalNeto3 ;
@@ -370,6 +392,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                 callback();
            
             },
+            
             function(err) {
 
                 if (contFac > 0) {
