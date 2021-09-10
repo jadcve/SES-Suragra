@@ -378,12 +378,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         }) + "</span></span></td>";
                         detalleDebitoLocal = detalleDebitoLocal + "</tr>";                    
                     }        
-    
-                    totalIvaFinal = totalIva + totalIvaLocal + totalIva2 + totalIva2Local + totalIva3 + totalIva3Local;
-                    totalNetoFinal = totalNeto + totalNeto2 + totalNeto3 ;
-                    totalNetoFinalCLP = totalNetoLocal + totalNeto2Local + totalNeto3Local;
-                    console.log(totalNetoFinal )
-                                 callback();
                 }
             } else {
                 console.log('El objeto NO ES array');
@@ -543,14 +537,14 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         }) + "</span></span></td>";
                         detalleDebitoLocal = detalleDebitoLocal + "</tr>";                    
                     }        
-    
-                    totalIvaFinal = totalIva + totalIvaLocal + totalIva2 + totalIva2Local + totalIva3 + totalIva3Local;
-                    totalNetoFinal = totalNeto + totalNeto2 + totalNeto3 ;
-                    totalNetoFinalCLP = totalNetoLocal + totalNeto2Local + totalNeto3Local;
-                    console.log(totalNetoFinal )
-                              callback();
                 }
             }
+
+            totalIvaFinal = totalIva + totalIvaLocal + totalIva2 + totalIva2Local + totalIva3 + totalIva3Local;
+            totalNetoFinal = totalNeto + totalNeto2 + totalNeto3 ;
+            totalNetoFinalCLP = totalNetoLocal + totalNeto2Local + totalNeto3Local;
+            console.log('Total Neto Final: ' + totalNetoFinal );
+            callback();
         },
             
         function(err) {
