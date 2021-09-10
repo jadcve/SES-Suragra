@@ -228,7 +228,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                     console.log('El objeto es array');
                     console.log('Tamaño: ' + value[0].length);
                     console.log('Índice: ' + i);
-                    console.log('Format Number: ' + formatNumber(value[0][0].IMP_IVA_DOC);
+                    console.log('Format Number: ' + formatNumber(value[0][0].IMP_IVA_DOC));
                     if (value[0][i].FLG_TPO_DOC_CTB == "FAC" && value[0][i].COD_MON == "USD") {
                         contFac = contFac + 1;
                         totalIva = totalIva + (value[0][i].IMP_IVA_DOC);
