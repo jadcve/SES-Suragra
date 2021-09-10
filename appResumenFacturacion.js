@@ -221,501 +221,489 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
-            codmon = value[0].COD_MON;
+            for (let i = 0; i < value.length; i++) {
+                codmon = value[i].COD_MON;
 
-          
-            if (value[0].FLG_TPO_DOC_CTB == "FAC" && value[0].COD_MON == "USD") {
-                console.log(value)
-                contFac = contFac + 1;
-                totalIva = totalIva + (value[0].IMP_IVA_DOC);
-                totalNeto = totalNeto + (value[0].IMP_TOT_NTO);
+                if (value[i].FLG_TPO_DOC_CTB == "FAC" && value[i].COD_MON == "USD") {
+                    contFac = contFac + 1;
+                    totalIva = totalIva + (value[i].IMP_IVA_DOC);
+                    totalNeto = totalNeto + (value[i].IMP_TOT_NTO);
 
-                detalleFactura = detalleFactura + "<tr>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].NUM_FOL + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].FEC_EMI + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_IVA_DOC, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_TOT_NTO, {
-                    fractionDigits: 2,
-                    symbols: {
-                        decimal: ',',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";                    
-                detalleFactura = detalleFactura + "</tr>";  
-            }
-            
-
-            if (value[0].COD_MON == "CLP" && value[0].FLG_TPO_DOC_CTB == "FAC") {
+                    detalleFactura = detalleFactura + "<tr>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].NUM_FOL + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_EMI + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_IVA_DOC, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_TOT_NTO, {
+                        fractionDigits: 2,
+                        symbols: {
+                            decimal: ',',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";                    
+                    detalleFactura = detalleFactura + "</tr>";  
+                }
                 
-                contFacLocal = contFacLocal + 1;
+                if (value[i].COD_MON == "CLP" && value[i].FLG_TPO_DOC_CTB == "FAC") {    
+                    contFacLocal = contFacLocal + 1;
+                    totalIvaLocal = totalIvaLocal + (value[i].IMP_IVA_DOC);
+                    totalNetoLocal = totalNetoLocal + (value[i].IMP_TOT_NTO);                                                   
 
-                totalIvaLocal = totalIvaLocal + (value[0].IMP_IVA_DOC);
-                totalNetoLocal = totalNetoLocal + (value[0].IMP_TOT_NTO);                                                   
+                    detalleFacturaLocal = detalleFacturaLocal + "<tr>";
+                    detalleFacturaLocal = detalleFacturaLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].NUM_FOL + "</span></span></td>";
+                    detalleFacturaLocal = detalleFacturaLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_EMI + "</span></span></td>";
+                    detalleFacturaLocal = detalleFacturaLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_IVA_DOC, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleFacturaLocal = detalleFacturaLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_TOT_NTO, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";                    
+                    detalleFacturaLocal = detalleFacturaLocal + "</tr>";                
+                }            
+                    
+                if (value[i].COD_MON == "USD" && value[i].FLG_TPO_DOC_CTB == "NCR") {
+                    contFac2 = contFac2 + 1;
+                    totalIva2 = totalIva2 + (value[i].IMP_IVA_DOC);
+                    totalNeto2 = totalNeto2 + (value[i].IMP_TOT_NTO);                                        
 
-                detalleFacturaLocal = detalleFacturaLocal + "<tr>";
-                detalleFacturaLocal = detalleFacturaLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].NUM_FOL + "</span></span></td>";
-                detalleFacturaLocal = detalleFacturaLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].FEC_EMI + "</span></span></td>";
-                detalleFacturaLocal = detalleFacturaLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_IVA_DOC, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleFacturaLocal = detalleFacturaLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_TOT_NTO, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";                    
-                detalleFacturaLocal = detalleFacturaLocal + "</tr>";                
-            }            
-                
-            if (value[0].COD_MON == "USD" && value[0].FLG_TPO_DOC_CTB == "NCR") {
-                console.log("entro if 3")
-                contFac2 = contFac2 + 1;
+                    detalleCredito = detalleCredito + "<tr>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].NUM_FOL + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_EMI + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_IVA_DOC, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_TOT_NTO, {
+                        fractionDigits: 2,
+                        symbols: {
+                            decimal: ',',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleCredito = detalleCredito + "</tr>";
+                }
 
-                totalIva2 = totalIva2 + (value[0].IMP_IVA_DOC);
-                totalNeto2 = totalNeto2 + (value[0].IMP_TOT_NTO);                                        
-               
-                detalleCredito = detalleCredito + "<tr>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].NUM_FOL + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].FEC_EMI + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_IVA_DOC, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_TOT_NTO, {
-                    fractionDigits: 2,
-                    symbols: {
-                        decimal: ',',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleCredito = detalleCredito + "</tr>";
-            }
+                if (value[i].COD_MON == "CLP" && value[i].FLG_TPO_DOC_CTB == "NCR") {
+                    contFac2Local = contFac2Local + 1;
+                    totalIva2Local = totalIva2Local + (value[i].IMP_IVA_DOC);
+                    totalNeto2Local = totalNeto2Local + (value[i].IMP_TOT_NTO);                                        
 
-            if (value[0].COD_MON == "CLP" && value[0].FLG_TPO_DOC_CTB == "NCR") {
-                contFac2Local = contFac2Local + 1;
-                console.log("entro if 4")
+                    detalleCreditoLocal = detalleCreditoLocal + "<tr>";
+                    detalleCreditoLocal = detalleCreditoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].NUM_FOL + "</span></span></td>";
+                    detalleCreditoLocal = detalleCreditoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_EMI + "</span></span></td>";
+                    detalleCreditoLocal = detalleCreditoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_IVA_DOC, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleCreditoLocal = detalleCreditoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_TOT_NTO, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: ',',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleCreditoLocal = detalleCreditoLocal + "</tr>";
+                }   
 
-                totalIva2Local = totalIva2Local + (value[0].IMP_IVA_DOC);
-                totalNeto2Local = totalNeto2Local + (value[0].IMP_TOT_NTO);                                        
-               
-                detalleCreditoLocal = detalleCreditoLocal + "<tr>";
-                detalleCreditoLocal = detalleCreditoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].NUM_FOL + "</span></span></td>";
-                detalleCreditoLocal = detalleCreditoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].FEC_EMI + "</span></span></td>";
-                detalleCreditoLocal = detalleCreditoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_IVA_DOC, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleCreditoLocal = detalleCreditoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_TOT_NTO, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: ',',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleCreditoLocal = detalleCreditoLocal + "</tr>";
-            }   
+                if (value[i].COD_MON == "USD" && value[i].FLG_TPO_DOC_CTB == "NDB") {
+                    contFac3 = contFac3 + 1;
+                    totalIva3 = totalIva3 + (value[i].IMP_IVA_DOC);
+                    totalNeto3 = totalNeto3 + (value[i].IMP_TOT_NTO);
 
-            if (value[0].COD_MON == "USD" && value[0].FLG_TPO_DOC_CTB == "NDB") {
-                contFac3 = contFac3 + 1;
-                console.log("entro if 5")
+                    detalleDebito = detalleDebito + "<tr>";
+                    detalleDebito = detalleDebito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].NUM_FOL + "</span></span></td>";
+                    detalleDebito = detalleDebito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_EMI + "</span></span></td>";
+                    detalleDebito = detalleDebito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_IVA_DOC, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleDebito = detalleDebito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_TOT_NTO, {
+                        fractionDigits: 2,
+                        symbols: {
+                            decimal: ',',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleDebito = detalleDebito + "</tr>";                    
+                }  
 
-                totalIva3 = totalIva3 + (value[0].IMP_IVA_DOC);
-                totalNeto3 = totalNeto3 + (value[0].IMP_TOT_NTO);
+                if (value[i].COD_MON == "CLP" && value[i].FLG_TPO_DOC_CTB == "NDB") {
+                    contFac3Local = contFac3Local + 1;
+                    console.log("entro if 6")
 
-                detalleDebito = detalleDebito + "<tr>";
-                detalleDebito = detalleDebito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].NUM_FOL + "</span></span></td>";
-                detalleDebito = detalleDebito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].FEC_EMI + "</span></span></td>";
-                detalleDebito = detalleDebito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_IVA_DOC, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleDebito = detalleDebito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_TOT_NTO, {
-                    fractionDigits: 2,
-                    symbols: {
-                        decimal: ',',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleDebito = detalleDebito + "</tr>";                    
-            }  
+                    totalIva3Local = totalIva3Local + (value[i].IMP_IVA_DOC);
+                    totalNeto3Local = totalNeto3Local + (value[i].IMP_TOT_NTO);
 
-            if (value[0].COD_MON == "CLP" && value[0].FLG_TPO_DOC_CTB == "NDB") {
-                contFac3Local = contFac3Local + 1;
-                console.log("entro if 6")
-
-                totalIva3Local = totalIva3Local + (value[0].IMP_IVA_DOC);
-                totalNeto3Local = totalNeto3Local + (value[0].IMP_TOT_NTO);
-
-                detalleDebitoLocal = detalleDebitoLocal + "<tr>";
-                detalleDebitoLocal = detalleDebitoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].NUM_FOL + "</span></span></td>";
-                detalleDebitoLocal = detalleDebitoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0].FEC_EMI + "</span></span></td>";
-                detalleDebitoLocal = detalleDebitoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_IVA_DOC, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleDebitoLocal = detalleDebitoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0].IMP_TOT_NTO, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleDebitoLocal = detalleDebitoLocal + "</tr>";                    
-            }        
+                    detalleDebitoLocal = detalleDebitoLocal + "<tr>";
+                    detalleDebitoLocal = detalleDebitoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].NUM_FOL + "</span></span></td>";
+                    detalleDebitoLocal = detalleDebitoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_EMI + "</span></span></td>";
+                    detalleDebitoLocal = detalleDebitoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_IVA_DOC, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleDebitoLocal = detalleDebitoLocal + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_TOT_NTO, {
+                        fractionDigits: 0,
+                        symbols: {
+                            decimal: '.',
+                            grouping: '.'
+                        }
+                    }) + "</span></span></td>";
+                    detalleDebitoLocal = detalleDebitoLocal + "</tr>";                    
+                }        
 
                 totalIvaFinal = totalIva + totalIvaLocal + totalIva2 + totalIva2Local + totalIva3 + totalIva3Local;
                 totalNetoFinal = totalNeto + totalNeto2 + totalNeto3 ;
                 totalNetoFinalCLP = totalNetoLocal + totalNeto2Local + totalNeto3Local;
                 callback();
-           
-            },
+            }
+        },
             
-            function(err) {
-
-                if (contFac > 0) {
-                    detalleFactura = detalleFactura + "<tr>";
-                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalIva, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='200'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>USD: " + formatNumber(totalNeto, {
-                        fractionDigits: 2,
-                        symbols: {
-                            decimal: ',',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";                    
-                    detalleFactura = detalleFactura + "</tr>";
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p><br></p>";                                            
-                } else {
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existe facturacion para moneda extranjera</p>";
-                }
-
-                detalleFactura = detalleFactura + "<br><p><b>Facturacion  Moneda Local</b></p>";
-                detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+        function(err) {
+            if (contFac > 0) {
                 detalleFactura = detalleFactura + "<tr>";
-                detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalIva, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='200'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>USD: " + formatNumber(totalNeto, {
+                    fractionDigits: 2,
+                    symbols: {
+                        decimal: ',',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";                    
                 detalleFactura = detalleFactura + "</tr>";
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p><br></p>";                                            
+            } else {
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p>No existe facturacion para moneda extranjera</p>";
+            }
 
+            detalleFactura = detalleFactura + "<br><p><b>Facturacion  Moneda Local</b></p>";
+            detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+            detalleFactura = detalleFactura + "<tr>";
+            detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+            detalleFactura = detalleFactura + "</tr>";
 
-                if (contFacLocal > 0) {
-                    detalleFactura = detalleFactura + detalleFacturaLocal;
-                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: "  + formatNumber(totalIvaLocal, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: "  + formatNumber(totalNetoLocal, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";                    
-                    detalleFactura = detalleFactura + "</tr>";
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p><br></p>";                                                
-                } else {
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existe facturacion para moneda local</p>";
-                }
+            if (contFacLocal > 0) {
+                detalleFactura = detalleFactura + detalleFacturaLocal;
+                detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: "  + formatNumber(totalIvaLocal, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: "  + formatNumber(totalNetoLocal, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";                    
+                detalleFactura = detalleFactura + "</tr>";
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p><br></p>";                                                
+            } else {
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p>No existe facturacion para moneda local</p>";
+            }
 
-                detalleFactura = detalleFactura + "<br><p><b>Notas de Credito Moneda Extranjera</b></p>";
-                detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+            detalleFactura = detalleFactura + "<br><p><b>Notas de Credito Moneda Extranjera</b></p>";
+            detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+            detalleFactura = detalleFactura + "<tr>";
+            detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+            detalleFactura = detalleFactura + "</tr>";
+
+            if (contFac2 > 0) {
+                detalleFactura = detalleFactura + detalleCredito;
                 detalleFactura = detalleFactura + "<tr>";
-                detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalIva2, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";                    
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>USD: " + formatNumber(totalNeto2, {
+                    fractionDigits: 2,
+                    symbols: {
+                        decimal: ',',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
                 detalleFactura = detalleFactura + "</tr>";
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p><br></p>";
+            }else {
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p>No existen nota de credito para moneda extranjera</p>";
+            }
 
-                if (contFac2 > 0) {
-                    detalleFactura = detalleFactura + detalleCredito;
-                    detalleFactura = detalleFactura + "<tr>";
-                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalIva2, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";                    
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>USD: " + formatNumber(totalNeto2, {
-                        fractionDigits: 2,
-                        symbols: {
-                            decimal: ',',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "</tr>";
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p><br></p>";
-                }else {
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existen notade de credito para moneda extranjera</p>";
-                }
+            detalleFactura = detalleFactura + "<br><p><b>Notas de Credito Moneda Local</b></p>";
+            detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+            detalleFactura = detalleFactura + "<tr>";
+            detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+            detalleFactura = detalleFactura + "</tr>";
 
-                detalleFactura = detalleFactura + "<br><p><b>Notas de Credito Moneda Local</b></p>";
-                detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+            if (contFac2Local > 0) {
+                detalleFactura = detalleFactura + detalleCreditoLocal;
+                detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: "  + formatNumber(totalIva2Local, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: "  + formatNumber(totalNeto2Local, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";                    
+                detalleFactura = detalleFactura + "</tr>";
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p><br></p>";                                                
+            } else {
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p>No existen notas de credito para moneda local</p>";
+            }
+
+            detalleFactura = detalleFactura + "<p><br><b>Notas de Debito Moneda Extranjera</b></p>";
+            detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+            detalleFactura = detalleFactura + "<tr>";
+            detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+            detalleFactura = detalleFactura + "</tr>";
+
+            if (contFac3 > 0) {
+                detalleFactura = detalleFactura + detalleDebito;
                 detalleFactura = detalleFactura + "<tr>";
-                detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalIva3, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>USD: " + formatNumber(totalNeto3, {
+                    fractionDigits: 2,
+                    symbols: {
+                        decimal: ',',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
                 detalleFactura = detalleFactura + "</tr>";
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p><br></p>";
+            }
+            else {
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p>No existen notas de debito para moneda extranjera</p>";
+            }
 
-                if (contFac2Local > 0) {
-                    detalleFactura = detalleFactura + detalleCreditoLocal;
-                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: "  + formatNumber(totalIva2Local, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: "  + formatNumber(totalNeto2Local, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";                    
-                    detalleFactura = detalleFactura + "</tr>";
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p><br></p>";                                                
-                } else {
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existen notas de credito para moneda local</p>";
-                }
+            detalleFactura = detalleFactura + "<p><br><b>Notas de Debito Moneda Local</b></p>";
+            detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+            detalleFactura = detalleFactura + "<tr>";
+            detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+            detalleFactura = detalleFactura + "</tr>";
 
-                detalleFactura = detalleFactura + "<p><br><b>Notas de Debito Moneda Extranjera</b></p>";
-                detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+            if (contFac3Local > 0) {
+                detalleFactura = detalleFactura + detalleDebitoLocal;
                 detalleFactura = detalleFactura + "<tr>";
-                detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
+                detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalIva3Local, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalNeto3Local, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
                 detalleFactura = detalleFactura + "</tr>";
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p><br></p>";
+            }
+            else {
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p>No existen notas de debito para moneda local</p>";
+            }
 
-                if (contFac3 > 0) {
-                    detalleFactura = detalleFactura + detalleDebito;
-                    detalleFactura = detalleFactura + "<tr>";
-                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalIva3, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>USD: " + formatNumber(totalNeto3, {
-                        fractionDigits: 2,
-                        symbols: {
-                            decimal: ',',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "</tr>";
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p><br></p>";
-                }
-                else {
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existen notas de debito para moneda extranjera</p>";
-                }
+            temp = temp.replace('&lt;TOTALIVA&gt;', formatNumber(totalIvaFinal, {
+                                                                                fractionDigits: 0,
+                                                                                symbols: {
+                                                                                    decimal: '.',
+                                                                                    grouping: '.'
+                                                                                }
+                                                                            }));
 
-                detalleFactura = detalleFactura + "<p><br><b>Notas de Debito Moneda Local</b></p>";
-                detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
-                detalleFactura = detalleFactura + "<tr>";
-                detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>IVA</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='100' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO</span></span></td>";
-                detalleFactura = detalleFactura + "</tr>";
+            temp = temp.replace('&lt;TOTALNETO&gt;', formatNumber(totalNetoFinal, {
+                                                                                fractionDigits: 2,
+                                                                                symbols: {
+                                                                                    decimal: ',',
+                                                                                    grouping: '.'
+                                                                                }
+                                                                            }));
+            temp = temp.replace('&lt;TOTALNETOCLP&gt;', formatNumber(totalNetoFinalCLP, {
+                                                                                fractionDigits: 0,
+                                                                                symbols: {
+                                                                                    decimal: '.',
+                                                                                    grouping: '.'
+                                                                                }
+                                                                            }));
 
-                if (contFac3Local > 0) {
-                    detalleFactura = detalleFactura + detalleDebitoLocal;
-                    detalleFactura = detalleFactura + "<tr>";
-                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Totales:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalIva3Local, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP: " + formatNumber(totalNeto3Local, {
-                        fractionDigits: 0,
-                        symbols: {
-                            decimal: '.',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "</tr>";
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p><br></p>";
-                }
-                else {
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existen notas de debito para moneda local</p>";
-                }
-
-                temp = temp.replace('&lt;TOTALIVA&gt;', formatNumber(totalIvaFinal, {
-                                                                                    fractionDigits: 0,
-                                                                                    symbols: {
-                                                                                        decimal: '.',
-                                                                                        grouping: '.'
-                                                                                    }
-                                                                                }));
-
-                temp = temp.replace('&lt;TOTALNETO&gt;', formatNumber(totalNetoFinal, {
-                                                                                    fractionDigits: 2,
-                                                                                    symbols: {
-                                                                                        decimal: ',',
-                                                                                        grouping: '.'
-                                                                                    }
-                                                                                }));
-                temp = temp.replace('&lt;TOTALNETOCLP&gt;', formatNumber(totalNetoFinalCLP, {
-                                                                                    fractionDigits: 0,
-                                                                                    symbols: {
-                                                                                        decimal: '.',
-                                                                                        grouping: '.'
-                                                                                    }
-                                                                                }));
-
-                temp = temp.replace('&lt;FACTURAS&gt;', detalleFactura);
-                
-                
-                if (alttest == 1){
-                    params = {
-                        Destination: { /* required */
-                            CcAddresses: [
-                            ],
-                            ToAddresses: [
-                                recipient_address,
-                                recipient_address2,
-                                recipient_address3,
-                                recipient_address4,
-                                recipient_address5,
-                                recipient_address6,
-                            ]
-                        },
-                        Message: { /* required */
-                            Body: { /* required */
-                                Html: {
-                                    Charset: "UTF-8",
-                                    Data: temp
-                                },
-                                Text: {
-                                    Charset: "UTF-8",
-                                    Data: ''
-                                }
+            temp = temp.replace('&lt;FACTURAS&gt;', detalleFactura);
+            
+            
+            if (alttest == 1){
+                params = {
+                    Destination: { /* required */
+                        CcAddresses: [
+                        ],
+                        ToAddresses: [
+                            recipient_address,
+                            recipient_address2,
+                            recipient_address3,
+                            recipient_address4,
+                            recipient_address5,
+                            recipient_address6,
+                        ]
+                    },
+                    Message: { /* required */
+                        Body: { /* required */
+                            Html: {
+                                Charset: "UTF-8",
+                                Data: temp
                             },
-                            Subject: {
-                                Charset: 'UTF-8',
-                                Data: asunto + " SURAGRA"
+                            Text: {
+                                Charset: "UTF-8",
+                                Data: ''
                             }
                         },
-                        Source: sender_address, /* required */
-                        ReplyToAddresses: [
-                            sender_address
-                            /* more items */
+                        Subject: {
+                            Charset: 'UTF-8',
+                            Data: asunto + " SURAGRA"
+                        }
+                    },
+                    Source: sender_address, /* required */
+                    ReplyToAddresses: [
+                        sender_address
+                        /* more items */
+                    ],
+                };
+            }
+            else{
+                params = {
+                    Destination: { /* required */
+                        CcAddresses: [
                         ],
-                    };
-                }
-                else{
-                    params = {
-                        Destination: { /* required */
-                            CcAddresses: [
-                            ],
-                            ToAddresses: [
-                                recipient_address,
-                            ]
-                        },
-                        Message: { /* required */
-                            Body: { /* required */
-                                Html: {
-                                    Charset: "UTF-8",
-                                    Data: temp
-                                },
-                                Text: {
-                                    Charset: "UTF-8",
-                                    Data: ''
-                                }
+                        ToAddresses: [
+                            recipient_address,
+                        ]
+                    },
+                    Message: { /* required */
+                        Body: { /* required */
+                            Html: {
+                                Charset: "UTF-8",
+                                Data: temp
                             },
-                            Subject: {
-                                Charset: 'UTF-8',
-                                Data: asunto + " SURAGRA"
+                            Text: {
+                                Charset: "UTF-8",
+                                Data: ''
                             }
                         },
-                        Source: sender_address, /* required */
-                        ReplyToAddresses: [
-                            sender_address
-                            /* more items */
-                        ],
-                    };                   
-                }                                
+                        Subject: {
+                            Charset: 'UTF-8',
+                            Data: asunto + " SURAGRA"
+                        }
+                    },
+                    Source: sender_address, /* required */
+                    ReplyToAddresses: [
+                        sender_address
+                        /* more items */
+                    ],
+                };                   
+            }                                
 
-                if (mandar == 1) {
-                    // Create the promise and SES service object
-                    let sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+            if (mandar == 1) {
+                // Create the promise and SES service object
+                let sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
 
-                    // Handle promise's fulfilled/rejected states
-                    sendPromise
-                        .then(
-                            function(data) {
-                                console.log(data.MessageId);
-                                log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
-                            })
-                        .catch(
-                            function(err) {
-                                console.error(err, err.stack);
-                                log(contacto, datosContacto.COD_CTC, 1, err);
-                        });
-                }
-            });
+                // Handle promise's fulfilled/rejected states
+                sendPromise
+                    .then(
+                        function(data) {
+                            console.log(data.MessageId);
+                            log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
+                        })
+                    .catch(
+                        function(err) {
+                            console.error(err, err.stack);
+                            log(contacto, datosContacto.COD_CTC, 1, err);
+                    });
+            }
+        });
     } catch (err) {
         log(contacto, datosContacto.COD_CTC, 1, err);
     }
