@@ -221,9 +221,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
-            console.log('----------------------------------');
-            console.log('Value: ', value );
-            console.log('----------------------------------');
             if (Array.isArray(value[0])) {
                 for (let i = 0; i < value[0].length; i++) {
                     codmon = value[0][i].COD_MON;
@@ -508,7 +505,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
     
                     if (value[i].COD_MON == "CLP" && value[i].FLG_TPO_DOC_CTB == "NDB") {
                         contFac3Local = contFac3Local + 1;
-                        console.log("entro if 6")
     
                         totalIva3Local = totalIva3Local + (value[i].IMP_IVA_DOC);
                         totalNeto3Local = totalNeto3Local + (value[i].IMP_TOT_NTO);
