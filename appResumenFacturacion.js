@@ -225,10 +225,10 @@ const email = async (contacto, datosContacto, datosFactura) => {
         console.log('-------------------------');
         async_lib.each(datosFactura, function(value, callback) {
             if (Array.isArray(value[0])) {
-                console.log('Elemento: ' + i);
                 for (let i = 0; i < value[0].length; i++) {
+                    console.log('Elemento:', i);
                     console.log('-------------------------');
-                    console.log('Documento: ' + value[0][i].NUM_DOC);
+                    console.log('Documento:', value[0][i].NUM_DOC);
                     console.log('-------------------------');
                     codmon = value[0][i].COD_MON;
                     if (value[0][i].FLG_TPO_DOC_CTB == "FAC" && value[0][i].COD_MON == "USD") {
