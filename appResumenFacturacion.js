@@ -221,6 +221,9 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
+            console.log('----------------------------------');
+            console.log('Value: ', value );
+            console.log('----------------------------------');
             if (Array.isArray(value[0])) {
                 for (let i = 0; i < value[0].length; i++) {
                     codmon = value[0][i].COD_MON;
@@ -537,11 +540,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
             totalNetoFinalCLP = totalNetoLocal + totalNeto2Local + totalNeto3Local;
             
             callback();
-            console.log('Total IVA Final: ' + totalIvaFinal );
-            console.log('Total Neto Final: ' + totalNetoFinal );
-            console.log('Total Neto Final CLP: ' + totalNetoFinalCLP );
-            console.log('----------------------------------');
-
         },
             
         function(err) {
