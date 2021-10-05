@@ -537,9 +537,12 @@ const email = async (contacto, datosContacto, datosFactura) => {
             totalNetoFinalCLP = totalNetoLocal + totalNeto2Local + totalNeto3Local;
             
             callback();
+            console.log('Total IVA Final: ' + totalIvaFinal );
+            console.log('Total Neto Final: ' + totalNetoFinal );
+            console.log('Total Neto Final CLP: ' + totalNetoFinalCLP );
+            console.log('----------------------------------');
+
         },
-        console.log('Total Neto Final: ' + totalNetoFinal );
-        process.exit(1);
             
         function(err) {
             if (contFac > 0) {
