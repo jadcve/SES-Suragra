@@ -200,199 +200,201 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
-            codmon = value.COD_MON;
+            for (let i = 0; i < value.length; i++) {
+                codmon = value.COD_MON;
 
-            if (value.FLG_TPO_REG == "NP" && value.COD_MON == "USD") {
-                contFac = contFac + 1;
-                totalNeto = totalNeto + (value.IMP_TOT_PEN);                                                   
+                if (value.FLG_TPO_REG == "NP" && value.COD_MON == "USD") {
+                    contFac = contFac + 1;
+                    totalNeto = totalNeto + (value.IMP_TOT_PEN);                                                   
 
-                detalleFactura = detalleFactura + "<tr>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_VEN + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
-                detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.IMP_SDO_PEN_EML + "</span></span></td>";
-                detalleFactura = detalleFactura + "</tr>";
-            }
-
-            if (value.FLG_TPO_REG == "NP" && value.COD_MON == "CLP") {
-                contFac2 = contFac2 + 1;
-                totalNeto2 = totalNeto2 + (value.IMP_TOT_PEN);                       
-
-                detalleCredito = detalleCredito + "<tr>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_VEN + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
-                detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_PEN, {
-                    fractionDigits: 0,
-                    symbols: {
-                        decimal: '.',
-                        grouping: '.'
-                    }
-                }) + "</span></span></td>";
-                detalleCredito = detalleCredito + "</tr>";
-            }
-                totalNetoFinal = totalNeto + totalNeto2;
-                callback();
-            },
-            function(err) {
-                if (contFac > 0) {
                     detalleFactura = detalleFactura + "<tr>";
-                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Total:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='200'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>"+ codmon + " " + formatNumber(totalNeto, {
-                        fractionDigits: 2,
-                        symbols: {
-                            decimal: ',',
-                            grouping: '.'
-                        }
-                    }) + "</b></span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_VEN + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.IMP_SDO_PEN_EML + "</span></span></td>";
                     detalleFactura = detalleFactura + "</tr>";
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p><br></p>";                                            
-                } else {
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existen documentos con NETO pendiente asociados a facturas con moneda extranjera</p>";
                 }
 
-                detalleFactura = detalleFactura + "<br><p><b>Facturacion  Moneda Local</b></p>";
-                detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
-                detalleFactura = detalleFactura + "<tr>";
-                detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Vencimiento</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias de Mora</span></span></td>";
-                detalleFactura = detalleFactura + "<td width='200' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO Pendiente</span></span></td>";
-                detalleFactura = detalleFactura + "</tr>";
+                if (value.FLG_TPO_REG == "NP" && value.COD_MON == "CLP") {
+                    contFac2 = contFac2 + 1;
+                    totalNeto2 = totalNeto2 + (value.IMP_TOT_PEN);                       
 
-                if (contFac2 > 0) {
-                    detalleFactura = detalleFactura + detalleCredito;
-                    detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
-                    detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Total:" + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP "  + formatNumber(totalNeto2, {
+                    detalleCredito = detalleCredito + "<tr>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_VEN + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_PEN, {
                         fractionDigits: 0,
                         symbols: {
                             decimal: '.',
                             grouping: '.'
                         }
-                    }) + "</b></span></span></td>";
-                    detalleFactura = detalleFactura + "</tr>";
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p><br></p>";                                                 
-                } else {
-                    detalleFactura = detalleFactura + "</table>";
-                    detalleFactura = detalleFactura + "<p>No existen documentos con NETO pendiente asociados a facturas con moneda local</p>";
+                    }) + "</span></span></td>";
+                    detalleCredito = detalleCredito + "</tr>";
                 }
+            }
+            totalNetoFinal = totalNeto + totalNeto2;
+            callback();
+        },
+        function(err) {
+            if (contFac > 0) {
+                detalleFactura = detalleFactura + "<tr>";
+                detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Total:" + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='200'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>"+ codmon + " " + formatNumber(totalNeto, {
+                    fractionDigits: 2,
+                    symbols: {
+                        decimal: ',',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "</tr>";
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p><br></p>";                                            
+            } else {
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p>No existen documentos con NETO pendiente asociados a facturas con moneda extranjera</p>";
+            }
 
-                temp = temp.replace('&lt;TOTALUSD&gt;', formatNumber(totalNeto, {
-                                                                                    fractionDigits: 2,
-                                                                                    symbols: {
-                                                                                        decimal: ',',
-                                                                                        grouping: '.'
-                                                                                    }
-                                                                                }));
-                temp = temp.replace('&lt;TOTALCLP&gt;', formatNumber(totalNeto2, {
-                                                                                    fractionDigits: 0,
-                                                                                    symbols: {
-                                                                                        decimal: '.',
-                                                                                        grouping: '.'
-                                                                                    }
-                                                                                }));
-                temp = temp.replace('&lt;FACTURAS&gt;', detalleFactura);
-                
-                if (alttest == 1){
-                    params = {
-                        Destination: { /* required */
-                            CcAddresses: [
-                            ],
-                            ToAddresses: [
-                                recipient_address,
-                                recipient_address2,
-                                recipient_address3,
-                                recipient_address4,
-                                recipient_address5,
-                                recipient_address6,
-                            ]
-                        },
-                        Message: { /* required */
-                            Body: { /* required */
-                                Html: {
-                                    Charset: "UTF-8",
-                                    Data: temp
-                                },
-                                Text: {
-                                    Charset: "UTF-8",
-                                    Data: ''
-                                }
+            detalleFactura = detalleFactura + "<br><p><b>Facturacion  Moneda Local</b></p>";
+            detalleFactura = detalleFactura + "<table cellspacing='0' cellpadding='0' width='100%'>";
+            detalleFactura = detalleFactura + "<tr>";
+            detalleFactura = detalleFactura + "<td width='79'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Documento</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Emision</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='80'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Fecha Vencimiento</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>Dias de Mora</span></span></td>";
+            detalleFactura = detalleFactura + "<td width='200' nowrap='nowrap'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>NETO Pendiente</span></span></td>";
+            detalleFactura = detalleFactura + "</tr>";
+
+            if (contFac2 > 0) {
+                detalleFactura = detalleFactura + detalleCredito;
+                detalleFactura = detalleFactura + "<td width='79'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='80'>&nbsp;" + "</td>";
+                detalleFactura = detalleFactura + "<td width='70'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>Total:" + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "<td width='100'><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'><b>CLP "  + formatNumber(totalNeto2, {
+                    fractionDigits: 0,
+                    symbols: {
+                        decimal: '.',
+                        grouping: '.'
+                    }
+                }) + "</b></span></span></td>";
+                detalleFactura = detalleFactura + "</tr>";
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p><br></p>";                                                 
+            } else {
+                detalleFactura = detalleFactura + "</table>";
+                detalleFactura = detalleFactura + "<p>No existen documentos con NETO pendiente asociados a facturas con moneda local</p>";
+            }
+
+            temp = temp.replace('&lt;TOTALUSD&gt;', formatNumber(totalNeto, {
+                                                                                fractionDigits: 2,
+                                                                                symbols: {
+                                                                                    decimal: ',',
+                                                                                    grouping: '.'
+                                                                                }
+                                                                            }));
+            temp = temp.replace('&lt;TOTALCLP&gt;', formatNumber(totalNeto2, {
+                                                                                fractionDigits: 0,
+                                                                                symbols: {
+                                                                                    decimal: '.',
+                                                                                    grouping: '.'
+                                                                                }
+                                                                            }));
+            temp = temp.replace('&lt;FACTURAS&gt;', detalleFactura);
+            
+            if (alttest == 1){
+                params = {
+                    Destination: { /* required */
+                        CcAddresses: [
+                        ],
+                        ToAddresses: [
+                            recipient_address,
+                            recipient_address2,
+                            recipient_address3,
+                            recipient_address4,
+                            recipient_address5,
+                            recipient_address6,
+                        ]
+                    },
+                    Message: { /* required */
+                        Body: { /* required */
+                            Html: {
+                                Charset: "UTF-8",
+                                Data: temp
                             },
-                            Subject: {
-                                Charset: 'UTF-8',
-                                Data: asunto + " SURAGRA"
+                            Text: {
+                                Charset: "UTF-8",
+                                Data: ''
                             }
                         },
-                        Source: sender_address, /* required */
-                        ReplyToAddresses: [
-                            sender_address
-                            /* more items */
+                        Subject: {
+                            Charset: 'UTF-8',
+                            Data: asunto + " SURAGRA"
+                        }
+                    },
+                    Source: sender_address, /* required */
+                    ReplyToAddresses: [
+                        sender_address
+                        /* more items */
+                    ],
+                };
+            }
+            else{
+                params = {
+                    Destination: { /* required */
+                        CcAddresses: [
                         ],
-                    };
-                }
-                else{
-                    params = {
-                        Destination: { /* required */
-                            CcAddresses: [
-                            ],
-                            ToAddresses: [
-                                recipient_address,
-                            ]
-                        },
-                        Message: { /* required */
-                            Body: { /* required */
-                                Html: {
-                                    Charset: "UTF-8",
-                                    Data: temp
-                                },
-                                Text: {
-                                    Charset: "UTF-8",
-                                    Data: ''
-                                }
+                        ToAddresses: [
+                            recipient_address,
+                        ]
+                    },
+                    Message: { /* required */
+                        Body: { /* required */
+                            Html: {
+                                Charset: "UTF-8",
+                                Data: temp
                             },
-                            Subject: {
-                                Charset: 'UTF-8',
-                                Data: asunto + " SURAGRA"
+                            Text: {
+                                Charset: "UTF-8",
+                                Data: ''
                             }
                         },
-                        Source: sender_address, /* required */
-                        ReplyToAddresses: [
-                            sender_address
-                            /* more items */
-                        ],
-                    };                   
-                }                                
+                        Subject: {
+                            Charset: 'UTF-8',
+                            Data: asunto + " SURAGRA"
+                        }
+                    },
+                    Source: sender_address, /* required */
+                    ReplyToAddresses: [
+                        sender_address
+                        /* more items */
+                    ],
+                };                   
+            }                                
 
-                if (mandar == 1) {
-                    // Create the promise and SES service object
-                    let sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+            if (mandar == 1) {
+                // Create the promise and SES service object
+                let sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
 
-                    // Handle promise's fulfilled/rejected states
-                    sendPromise
-                        .then(
-                            function(data) {
-                                console.log(data.MessageId);
-                                log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
-                            })
-                        .catch(
-                            function(err) {
-                                console.error(err, err.stack);
-                                log(contacto, datosContacto.COD_CTC, 1, err);
-                        });
-                }
-            });
+                // Handle promise's fulfilled/rejected states
+                sendPromise
+                    .then(
+                        function(data) {
+                            console.log(data.MessageId);
+                            log(contacto, datosContacto.COD_CTC, 0, "EJECUTADO EXITOSAMENTE");
+                        })
+                    .catch(
+                        function(err) {
+                            console.error(err, err.stack);
+                            log(contacto, datosContacto.COD_CTC, 1, err);
+                    });
+            }
+        });
     } catch (err) {
         log(contacto, datosContacto.COD_CTC, 1, err);
     }
