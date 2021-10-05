@@ -221,8 +221,12 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
+            console.log('-------------------------');
+            console.log('Valor de value');
             console.log(value);
+            console.log('-------------------------');
             if (Array.isArray(value[0])) {
+                console.log('Entró al IF principal evaluando Array.isArray(value[0])');
                 for (let i = 0; i < value[0].length; i++) {
                     codmon = value[0][i].COD_MON;
                     console.log('El objeto es array');
@@ -230,6 +234,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                     console.log('Índice: ' + i);
                     console.log('Format Number: ' + formatNumber(value[0][0].IMP_TOT_NTO));
                     if (value[0][i].FLG_TPO_DOC_CTB == "FAC" && value[0][i].COD_MON == "USD") {
+                        console.log('Entró al IF secundario 1, cadenas FAC y USD');
                         contFac = contFac + 1;
                         totalIva = totalIva + (value[0][i].IMP_IVA_DOC);
                         totalNeto = totalNeto + (value[0][i].IMP_TOT_NTO);
@@ -253,8 +258,12 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         }) + "</span></span></td>";                    
                         detalleFactura = detalleFactura + "</tr>";  
                     }
-                    
-                    if (value[0][i].COD_MON == "CLP" && value[0][i].FLG_TPO_DOC_CTB == "FAC") {    
+                    console.log('Salió del IF secundario 1');
+                    console.log('+++++++++++++++++++++++++');
+                    console.log('.........................');
+                    console.log('+++++++++++++++++++++++++');
+                    if (value[0][i].COD_MON == "CLP" && value[0][i].FLG_TPO_DOC_CTB == "FAC") {   
+                        console.log('Entró al IF secundario 2, cadenas CLP y FAC'); 
                         contFacLocal = contFacLocal + 1;
                         totalIvaLocal = totalIvaLocal + (value[0][i].IMP_IVA_DOC);
                         totalNetoLocal = totalNetoLocal + (value[0][i].IMP_TOT_NTO);                                                   
@@ -278,8 +287,12 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         }) + "</span></span></td>";                    
                         detalleFacturaLocal = detalleFacturaLocal + "</tr>";                
                     }            
-                        
+                    console.log('Salió del IF secundario 2');
+                    console.log('+++++++++++++++++++++++++');
+                    console.log('.........................');
+                    console.log('+++++++++++++++++++++++++');  
                     if (value[0][i].COD_MON == "USD" && value[0][i].FLG_TPO_DOC_CTB == "NCR") {
+                        console.log('Entró al IF secundario 3, cadenas USD y NCR');
                         contFac2 = contFac2 + 1;
                         totalIva2 = totalIva2 + (value[0][i].IMP_IVA_DOC);
                         totalNeto2 = totalNeto2 + (value[0][i].IMP_TOT_NTO);                                        
@@ -303,8 +316,12 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         }) + "</span></span></td>";
                         detalleCredito = detalleCredito + "</tr>";
                     }
-    
+                    console.log('Salió del IF secundario 3');
+                    console.log('+++++++++++++++++++++++++');
+                    console.log('.........................');
+                    console.log('+++++++++++++++++++++++++');
                     if (value[0][i].COD_MON == "CLP" && value[0][i].FLG_TPO_DOC_CTB == "NCR") {
+                        console.log('Entró al IF secundario 4, cadenas CLP y NCR');
                         contFac2Local = contFac2Local + 1;
                         totalIva2Local = totalIva2Local + (value[0][i].IMP_IVA_DOC);
                         totalNeto2Local = totalNeto2Local + (value[0][i].IMP_TOT_NTO);                                        
@@ -328,8 +345,12 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         }) + "</span></span></td>";
                         detalleCreditoLocal = detalleCreditoLocal + "</tr>";
                     }   
-    
+                    console.log('Salió del IF secundario 4');
+                    console.log('+++++++++++++++++++++++++');
+                    console.log('.........................');
+                    console.log('+++++++++++++++++++++++++');
                     if (value[0][i].COD_MON == "USD" && value[0][i].FLG_TPO_DOC_CTB == "NDB") {
+                        console.log('Entró al IF secundario 5, cadenas USD y NDB');
                         contFac3 = contFac3 + 1;
                         totalIva3 = totalIva3 + (value[0][i].IMP_IVA_DOC);
                         totalNeto3 = totalNeto3 + (value[0][i].IMP_TOT_NTO);
@@ -353,8 +374,12 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         }) + "</span></span></td>";
                         detalleDebito = detalleDebito + "</tr>";                    
                     }  
-    
+                    console.log('Salió del IF secundario 5');
+                    console.log('+++++++++++++++++++++++++');
+                    console.log('.........................');
+                    console.log('+++++++++++++++++++++++++');
                     if (value[0][i].COD_MON == "CLP" && value[0][i].FLG_TPO_DOC_CTB == "NDB") {
+                        console.log('Entró al IF secundario 6, cadenas CLP y NDB');
                         contFac3Local = contFac3Local + 1;
                         totalIva3Local = totalIva3Local + (value[0][i].IMP_IVA_DOC);
                         totalNeto3Local = totalNeto3Local + (value[0][i].IMP_TOT_NTO);
@@ -377,7 +402,11 @@ const email = async (contacto, datosContacto, datosFactura) => {
                             }
                         }) + "</span></span></td>";
                         detalleDebitoLocal = detalleDebitoLocal + "</tr>";                    
-                    }        
+                    }
+                    console.log('Salió del IF secundario 6');
+                    console.log('+++++++++++++++++++++++++');
+                    console.log('.........................');
+                    console.log('+++++++++++++++++++++++++');       
                 }
             } else {
                 console.log('El objeto NO ES array');
