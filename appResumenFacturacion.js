@@ -220,19 +220,11 @@ const email = async (contacto, datosContacto, datosFactura) => {
 
         let codmon="";
 
-        console.log('-------------------------');
-        console.log('Comienzo de iteración');
-        console.log('-------------------------');
         async_lib.each(datosFactura, function(value, callback) {
             if (Array.isArray(value[0])) {
                 for (let i = 0; i < value[0].length; i++) {
-                    console.log('Elemento:', i);
-                    console.log('-------------------------');
-                    console.log('Documento:', value[0][i].NUM_DOC);
-                    console.log('-------------------------');
                     codmon = value[0][i].COD_MON;
                     if (value[0][i].FLG_TPO_DOC_CTB == "FAC" && value[0][i].COD_MON == "USD") {
-                        console.log('Entró al IF secundario 1, cadenas FAC y USD');
                         contFac = contFac + 1;
                         totalIva = totalIva + (value[0][i].IMP_IVA_DOC);
                         totalNeto = totalNeto + (value[0][i].IMP_TOT_NTO);
@@ -255,24 +247,8 @@ const email = async (contacto, datosContacto, datosFactura) => {
                             }
                         }) + "</span></span></td>";                    
                         detalleFactura = detalleFactura + "</tr>";  
-                        console.log('Valores obtenidos');
-                        console.log('+++++++++++++++++++++++++');
-                        console.log('IMP IVA DOC:', formatNumber(value[0][i].IMP_IVA_DOC, {
-                            fractionDigits: 0,
-                            symbols: {
-                                decimal: '.',
-                                grouping: '.'
-                            }}));
-                        console.log('+++++++++++++++++++++++++');
-                        console.log('IMP TOT NTO:', formatNumber(value[0][i].IMP_TOT_NTO, {
-                            fractionDigits: 2,
-                            symbols: {
-                                decimal: ',',
-                                grouping: '.'
-                            }}));
                     }
-                    console.log('Salió del IF secundario 1');
-                    console.log('+++++++++++++++++++++++++');
+
                     if (value[0][i].COD_MON == "CLP" && value[0][i].FLG_TPO_DOC_CTB == "FAC") {   
                         contFacLocal = contFacLocal + 1;
                         totalIvaLocal = totalIvaLocal + (value[0][i].IMP_IVA_DOC);
@@ -399,9 +375,6 @@ const email = async (contacto, datosContacto, datosFactura) => {
                     }       
                 }
             } else {
-                console.log('El objeto NO ES array');
-                console.log('Tamaño: ' + value.length);
-                console.log('Índice: ' + i);
                 for (let i = 0; i < value.length; i++) {
                     codmon = value[i].COD_MON;
     
@@ -562,9 +535,11 @@ const email = async (contacto, datosContacto, datosFactura) => {
             totalIvaFinal = totalIva + totalIvaLocal + totalIva2 + totalIva2Local + totalIva3 + totalIva3Local;
             totalNetoFinal = totalNeto + totalNeto2 + totalNeto3 ;
             totalNetoFinalCLP = totalNetoLocal + totalNeto2Local + totalNeto3Local;
-            console.log('Total Neto Final: ' + totalNetoFinal );
+            
             callback();
         },
+        console.log('Total Neto Final: ' + totalNetoFinal );
+        process.exit(1);
             
         function(err) {
             if (contFac > 0) {
