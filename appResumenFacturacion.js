@@ -255,12 +255,23 @@ const email = async (contacto, datosContacto, datosFactura) => {
                             }
                         }) + "</span></span></td>";                    
                         detalleFactura = detalleFactura + "</tr>";  
+                        console.log('Valores obtenidos');
+                        console.log('+++++++++++++++++++++++++');
+                        console.log('IMP IVA DOC:', formatNumber(value[0][i].IMP_IVA_DOC, {
+                            fractionDigits: 0,
+                            symbols: {
+                                decimal: '.',
+                                grouping: '.'
+                            }}));
+                        console.log('+++++++++++++++++++++++++');
+                        console.log('IMP TOT NTO:', formatNumber(value[0][i].IMP_TOT_NTO, {
+                            fractionDigits: 2,
+                            symbols: {
+                                decimal: ',',
+                                grouping: '.'
+                            }}));
                     }
                     console.log('Salió del IF secundario 1');
-                    console.log('+++++++++++++++++++++++++');
-                    console.log('Texto de detalle factura');
-                    console.log('+++++++++++++++++++++++++');
-                    console.log(detalleFactura);
                     console.log('+++++++++++++++++++++++++');
                     if (value[0][i].COD_MON == "CLP" && value[0][i].FLG_TPO_DOC_CTB == "FAC") {   
                         contFacLocal = contFacLocal + 1;
