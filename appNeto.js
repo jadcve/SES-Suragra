@@ -200,6 +200,9 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
+            console.log('----------------------------------');
+            console.log( value );
+            console.log('----------------------------------');
             for (let i = 0; i < value.length; i++) {
                 codmon = value.COD_MON;
 
