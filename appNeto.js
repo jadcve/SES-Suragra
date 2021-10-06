@@ -32,7 +32,7 @@ const poolConnect = pool.connect();
 let template;
 let asunto;
 let mandar = 1;
-let alttest=2;
+let alttest=1;
 
 const buscarTemplate = async () => {
     await poolConnect;
@@ -118,7 +118,7 @@ const registrosContacto = async (contacto, datosContacto) => {
         request.stream = false;        
         request.input('COD_IDT_SAP', sql.VarChar, contacto.COD_IDT_SAP);
     
-        request.execute('SP_SGR_CNA_STC_CMR_IVA_PND', function(err, recordsets, returnValue, affected) {
+        request.execute('SP_SGR_CNA_STC_CMR_NTO_PND', function(err, recordsets, returnValue, affected) {
             email(contacto, datosContacto, recordsets);
         });
     } catch(err) {
@@ -200,35 +200,35 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
-            console.log('----------------------------------');
+         /*  console.log('----------------------------------');
             console.log( value );
-            console.log('----------------------------------');
-            for (let i = 0; i < value.length; i++) {
-                codmon = value.COD_MON;
+            console.log('----------------------------------');*/
 
-                if (value.FLG_TPO_REG == "NP" && value.COD_MON == "USD") {
+            for (let i = 0; i < value.length; i++) {
+                codmon = value[i].COD_MON;
+                if (value[i].FLG_TPO_REG == "NP" && value[i].COD_MON == "USD") {
                     contFac = contFac + 1;
-                    totalNeto = totalNeto + (value.IMP_TOT_PEN);                                                   
+                    totalNeto = totalNeto + (value[i].IMP_TOT_PEN);                                                   
 
                     detalleFactura = detalleFactura + "<tr>";
-                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
-                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
-                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_VEN + "</span></span></td>";
-                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
-                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.IMP_SDO_PEN_EML + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].NUM_FOL + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_EMI + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_VEN + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].CAN_DIA_MOR + "</span></span></td>";
+                    detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].IMP_SDO_PEN_EML + "</span></span></td>";
                     detalleFactura = detalleFactura + "</tr>";
                 }
 
-                if (value.FLG_TPO_REG == "NP" && value.COD_MON == "CLP") {
+                if (value[i].FLG_TPO_REG == "NP" && value[i].COD_MON == "CLP") {
                     contFac2 = contFac2 + 1;
-                    totalNeto2 = totalNeto2 + (value.IMP_TOT_PEN);                       
+                    totalNeto2 = totalNeto2 + (value[i].IMP_TOT_PEN);                       
 
                     detalleCredito = detalleCredito + "<tr>";
-                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.NUM_FOL + "</span></span></td>";
-                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_EMI + "</span></span></td>";
-                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.FEC_VEN + "</span></span></td>";
-                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value.CAN_DIA_MOR + "</span></span></td>";
-                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value.IMP_TOT_PEN, {
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].NUM_FOL + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_EMI + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].FEC_VEN + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[i].CAN_DIA_MOR + "</span></span></td>";
+                    detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[i].IMP_TOT_PEN, {
                         fractionDigits: 0,
                         symbols: {
                             decimal: '.',

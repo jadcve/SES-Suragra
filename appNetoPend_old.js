@@ -27,7 +27,7 @@ var mandar = 1;
 // Variable que permite controlar si el mail sera enviado internamente como prueba o a clientes //
 // alttest=1 --> Se envia al cliente
 // alttest=2 --> Se envia internamente a una cuenta de Aboutit
-var alttest=2;
+var alttest=1;
 
 BuscaTempleta();
 
