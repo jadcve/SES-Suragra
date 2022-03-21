@@ -32,6 +32,8 @@ const poolConnect = pool.connect();
 let template;
 let asunto;
 let mandar = 1;
+
+// 1 envia a contactos en general, 2 al correo para pruebas
 let alttest=1;
 
 const buscarTemplate = async () => {
@@ -200,9 +202,9 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
-         /*  console.log('----------------------------------');
-            console.log( value );
-            console.log('----------------------------------');*/
+        //    console.log('----------------------------------');
+        //     console.log( value );
+        //     console.log('----------------------------------');
 
             for (let i = 0; i < value.length; i++) {
                 codmon = value[i].COD_MON;
@@ -354,6 +356,7 @@ const email = async (contacto, datosContacto, datosFactura) => {
                         ],
                         ToAddresses: [
                             recipient_address,
+                            //recipient_address3,
                         ]
                     },
                     Message: { /* required */

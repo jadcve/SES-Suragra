@@ -32,6 +32,7 @@ const poolConnect = pool.connect();
 let template;
 let asunto;
 let mandar = 1;
+// 1 envia a contactos en general, 2 al correo para pruebas
 let alttest=1;
 
 const buscarTemplate = async () => {
@@ -202,65 +203,11 @@ const email = async (contacto, datosContacto, datosFactura) => {
         let codmon="";
 
         async_lib.each(datosFactura, function(value, callback) {
-            // if (Array.isArray(value[0])) {
-            //     for (let i = 0; i < value[0].length; i++) {
-            //         codmon = value[0][i].COD_MON;
-            //         if (value[0][i].FLG_TPO_REG == "IP" && value[0][i].COD_MON == "USD") {
-            //             contFac = contFac + 1;
-
-            //             totalIva = totalIva + (value[0][i].IMP_IVA_DOC);
-            //             totalNeto = totalNeto + (value[0][i].IMP_TOT_NTO);                                                   
-
-            //             detalleFactura = detalleFactura + "<tr>";
-            //             detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0][i].NUM_FOL + "</span></span></td>";
-            //             detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0][i].FEC_EMI + "</span></span></td>";
-            //             detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0][i].IMP_TOT_NTO, {
-            //                 fractionDigits: 2,
-            //                 symbols: {
-            //                     decimal: ',',
-            //                     grouping: '.'
-            //                 }
-            //             }) + "</span></span></td>";
-            //             detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0][i].IMP_IVA_DOC, {
-            //                 fractionDigits: 0,
-            //                 symbols: {
-            //                     decimal: '.',
-            //                     grouping: '.'
-            //                 }
-            //             }) + "</span></span></td>";
-            //             detalleFactura = detalleFactura + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0][i].CAN_DIA_MOR + "</span></span></td>";
-            //             detalleFactura = detalleFactura + "</tr>";
-            //         }
-
-            //         if (value[0][i].FLG_TPO_REG == "IP" && value[0][i].COD_MON == "CLP") {
-            //             contFac2 = contFac2 + 1;
-
-            //             totalIva2 = totalIva2 + (value[0][i].IMP_IVA_DOC);
-            //             totalNeto2 = totalNeto2 + (value[0][i].IMP_TOT_NTO);                       
-
-            //             detalleCredito = detalleCredito + "<tr>";
-            //             detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0][i].NUM_FOL + "</span></span></td>";
-            //             detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0][i].FEC_EMI + "</span></span></td>";
-            //             detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0][i].IMP_TOT_NTO, {
-            //                 fractionDigits: 0,
-            //                 symbols: {
-            //                     decimal: '.',
-            //                     grouping: '.'
-            //                 }
-            //             }) + "</span></span></td>";
-            //             detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + formatNumber(value[0][i].IMP_IVA_DOC, {
-            //                 fractionDigits: 0,
-            //                 symbols: {
-            //                     decimal: '.',
-            //                     grouping: '.'
-            //                 }
-            //             }) + "</span></span></td>";
-            //             detalleCredito = detalleCredito + "<td><span style='font-size:11px'><span style='font-family:tahoma,geneva,sans-serif'>" + value[0][i].CAN_DIA_MOR + "</span></span></td>";                
-            //             detalleCredito = detalleCredito + "</tr>";
-            //         }
-            //     }
-            // } else {
+            // console.log('----------------------------------');s
+            // console.log( value );
+            // console.log('----------------------------------');
                 for (let i = 0; i < value.length; i++) {
+
                     codmon = value[i].COD_MON;
                     if (value[i].FLG_TPO_REG == "IP" && value[i].COD_MON == "USD") {
                         contFac = contFac + 1;
